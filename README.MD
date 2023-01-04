@@ -4,6 +4,16 @@ A set of reusable GitHub actions that can be used to simplify your workflows.
 
 ## Android
 
+### Setup Android build environment
+
+Setup java, Android SDK and enable dependency caching.
+
+Example usage:
+
+```yaml
+- uses: inovait/actions-common/android-setup@main
+```
+
 ### Run with emulator
 
 Start Android emulator and run specified command when emulator is active. When your command finishes, emulator is stopped. 

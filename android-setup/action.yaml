@@ -1,0 +1,20 @@
+name: "Setup Android Environment"
+description: "Setup java, Android SDK and enable dependency caching."
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: temurin
+    - uses: inovait/action-localcache@main
+      name: "Cache gradle wrapper"
+      with:
+        folder: ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-wrapper
+    - uses: inovait/action-localcache@main
+      name: "Cache gradle dependencies"
+      with:
+        folder: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-caches
+    - uses: android-actions/setup-android@v2
