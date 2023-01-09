@@ -96,6 +96,10 @@ export function generateCommitList(
   for (let commit of commits) {
     listText += '* '
 
+    if (commit.jiraTicket && options.jiraUrl) {
+      listText += `[${commit.jiraTicket}](${options.jiraUrl}/browse/${commit.jiraTicket}) - `
+    }
+
     if (commit.scope) {
       listText += `**${commit.scope}** `
     }
