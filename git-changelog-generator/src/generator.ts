@@ -1,7 +1,7 @@
 import { Commit } from 'nodegit'
 
 export interface GenerationOptions {
-  gitCommitUrlPrefix: string,
+  gitCommitUrlPrefix: string
   jiraUrl?: string
 }
 
@@ -12,42 +12,41 @@ export function generateChangelog(commits: Commit[], options: GenerationOptions)
   let changelog = ''
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => commit.breaking && commit.type == 'feat'),
+    parsedCommits.filter((commit) => (commit.breaking === true) && commit.type === 'feat'),
     'BREAKING Features',
     options
   )
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => commit.breaking && commit.type == 'fix'),
+    parsedCommits.filter((commit) => (commit.breaking === true) && commit.type === 'fix'),
     'BREAKING Bug Fixes',
     options
   )
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => !commit.breaking && commit.type == 'feat'),
+    parsedCommits.filter((commit) => (commit.breaking === false) && commit.type === 'feat'),
     'Features',
     options
   )
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => !commit.breaking && commit.type == 'fix'),
+    parsedCommits.filter((commit) => (commit.breaking === false) && commit.type === 'fix'),
     'Bug Fixes',
     options
   )
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => commit.type && commit.type != 'feat' && commit.type != 'fix' && (commit.breaking || commit.jiraTicket)),
+    parsedCommits.filter((commit) => (commit.type != null) && commit.type !== 'feat' && commit.type !== 'fix' && ((commit.breaking === true) || commit.jiraTicket)),
     'Miscellaneous',
     options
   )
 
-  changelog += generateCommitCategory(parsedCommits.filter((commit) => !commit.type), '', options)
+  changelog += generateCommitCategory(parsedCommits.filter((commit) => commit.type == null), '', options)
 
   return changelog.trim()
 }
 
 class ParsedCommit {
-
   constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean) {
     this.commit = commit
     this.clearedMessage = clearedMessage
@@ -70,13 +69,13 @@ export function generateCommitCategory(
   categoryTitle: string,
   options: GenerationOptions
 ): string {
-  if (commits.length == 0) {
+  if (commits.length === 0) {
     return ''
   }
 
   let categoryText = ''
 
-  if (categoryTitle.length != 0) {
+  if (categoryTitle.length !== 0) {
     categoryText += `### ${categoryTitle}\n\n`
   }
 
@@ -93,14 +92,14 @@ export function generateCommitList(
 ): string {
   let listText = ''
 
-  for (let commit of commits) {
+  for (const commit of commits) {
     listText += '* '
 
-    if (commit.jiraTicket && options.jiraUrl) {
+    if ((commit.jiraTicket != null) && (options.jiraUrl != null)) {
       listText += `[${commit.jiraTicket}](${options.jiraUrl}/browse/${commit.jiraTicket}) - `
     }
 
-    if (commit.scope) {
+    if (commit.scope != null) {
       listText += `**${commit.scope}**: `
     }
 
@@ -131,4 +130,3 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
     }
   })
 }
-
