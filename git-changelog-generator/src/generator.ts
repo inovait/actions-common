@@ -12,14 +12,32 @@ export function generateChangelog(commits: Commit[], options: GenerationOptions)
   let changelog = ''
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => commit.type == 'feat'),
+    parsedCommits.filter((commit) => commit.breaking && commit.type == 'feat'),
+    'BREAKING Features',
+    options
+  )
+
+  changelog += generateCommitCategory(
+    parsedCommits.filter((commit) => commit.breaking && commit.type == 'fix'),
+    'BREAKING Bug Fixes',
+    options
+  )
+
+  changelog += generateCommitCategory(
+    parsedCommits.filter((commit) => !commit.breaking && commit.type == 'feat'),
     'Features',
     options
   )
 
   changelog += generateCommitCategory(
-    parsedCommits.filter((commit) => commit.type == 'fix'),
+    parsedCommits.filter((commit) => !commit.breaking && commit.type == 'fix'),
     'Bug Fixes',
+    options
+  )
+
+  changelog += generateCommitCategory(
+    parsedCommits.filter((commit) => commit.type && commit.type != 'feat' && commit.type != 'fix' && (commit.breaking || commit.jiraTicket)),
+    'Miscellaneous',
     options
   )
 
@@ -30,12 +48,13 @@ export function generateChangelog(commits: Commit[], options: GenerationOptions)
 
 class ParsedCommit {
 
-  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string) {
+  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean) {
     this.commit = commit
     this.clearedMessage = clearedMessage
     this.scope = scope
     this.type = type
     this.jiraTicket = jiraTicket
+    this.breaking = breaking
   }
 
   type?: string
@@ -43,6 +62,7 @@ class ParsedCommit {
   jiraTicket?: string
   clearedMessage: string
   commit: Commit
+  breaking?: boolean
 }
 
 export function generateCommitCategory(
@@ -62,7 +82,7 @@ export function generateCommitCategory(
 
   categoryText += generateCommitList(commits, options)
 
-  categoryText += "\n"
+  categoryText += '\n'
 
   return categoryText
 }
@@ -100,9 +120,10 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         match[5],
         match[3],
         match[2],
+        rawCommit.body().includes('BREAKING')
       )
     } else {
-      return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined)
+      return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined)
     }
   })
 }

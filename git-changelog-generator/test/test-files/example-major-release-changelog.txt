@@ -1,0 +1,33 @@
+### BREAKING Features
+
+* update coroutines to 0.30.2 ([6d12a715](http://hydra/testProject/commit/6d12a715b58eac872c76210fc599685cee2642c7))
+* update coroutines to 0.30.2-eap13 and kotlin to 1.3 ([2c42e53e](http://hydra/testProject/commit/2c42e53e1b35efddc01fc49f563fa3c2d7934242))
+* update coroutines to 1.0.0 ([9abca5d3](http://hydra/testProject/commit/9abca5d3f84b40d727020b692bdfafd69651b232))
+* change dispatcher override to return CoroutineContext ([fcacdec1](http://hydra/testProject/commit/fcacdec1349e91f595002ba79085a35d4ac420a5))
+* move dispatchers proxy to common class ([e85afaa4](http://hydra/testProject/commit/e85afaa41361d5b969061d5fef786aa4fc6abbbf))
+* add CoroutineScope to CoroutineViewModel ([dff95f36](http://hydra/testProject/commit/dff95f363f60edfcbdcabc72561985b50e1ea721))
+* migrate to AndroidX ([6453b08c](http://hydra/testProject/commit/6453b08cd728cc0da27ce8220252d4030808adf7))
+
+### BREAKING Bug Fixes
+
+* rewrite OnDemandProvider with new coroutines ([ec1c05fe](http://hydra/testProject/commit/ec1c05feb01408df9e20b1a64606c020da55aeb5))
+* TimeProvider timezone was always UTC ([a7625ec2](http://hydra/testProject/commit/a7625ec2d7ab115a52d4471a203b7245d7382163))
+
+### Features
+
+* add RxCoroutinesTimeMachine ([33a28b0f](http://hydra/testProject/commit/33a28b0fcf73dabf01395488ac1c4663ef06b162))
+* remove ResourceLiveData.setValue deprecation ([1ef779cd](http://hydra/testProject/commit/1ef779cdc35cf5844bb78965658cb818901a61a6))
+* make LiveData observing utils inline ([340762cc](http://hydra/testProject/commit/340762ccc0ac26ab71c0579ac1f2a61211c0140c))
+
+### Bug Fixes
+
+* **android** PreferenceProperty null default crash ([817668bf](http://hydra/testProject/commit/817668bf18e9a8292a6baf87740a583b95f7173f))
+* use SupervisorJob on ViewModel ([962b3eb5](http://hydra/testProject/commit/962b3eb5cd9c6c9673ab2d818a560fe1a18765bb))
+* lock OnDemandProvider into mutex ([abd0ae70](http://hydra/testProject/commit/abd0ae703769b889814fc1c896b55e96a1e9dbce))
+
+### Miscellaneous
+
+* android dispatcher returns CoroutineContext ([41d59884](http://hydra/testProject/commit/41d598842a6506d8b2e9b1523eb09742140d3bbe))
+* delete unused CenterFirstDecoration ([5b10ff53](http://hydra/testProject/commit/5b10ff53701d2acf787fc408c130a2bc07cfd994))
+* remove PaginatedQuery.reset ([2721cd88](http://hydra/testProject/commit/2721cd883b0e94e25e936751fd78ecd17b3127b3))
+* remove SectionRecyclerAdapter detach ([08d81e6c](http://hydra/testProject/commit/08d81e6c45a22829b98bfae93de7d037c16efa75))
