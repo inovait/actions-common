@@ -21,7 +21,7 @@
 
 ### Bug Fixes
 
-* **android** PreferenceProperty null default crash ([817668bf](http://hydra/testProject/commit/817668bf18e9a8292a6baf87740a583b95f7173f))
+* **android**: PreferenceProperty null default crash ([817668bf](http://hydra/testProject/commit/817668bf18e9a8292a6baf87740a583b95f7173f))
 * use SupervisorJob on ViewModel ([962b3eb5](http://hydra/testProject/commit/962b3eb5cd9c6c9673ab2d818a560fe1a18765bb))
 * lock OnDemandProvider into mutex ([abd0ae70](http://hydra/testProject/commit/abd0ae703769b889814fc1c896b55e96a1e9dbce))
 

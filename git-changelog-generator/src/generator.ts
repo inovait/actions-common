@@ -101,7 +101,7 @@ export function generateCommitList(
     }
 
     if (commit.scope) {
-      listText += `**${commit.scope}** `
+      listText += `**${commit.scope}**: `
     }
 
     listText += commit.clearedMessage
