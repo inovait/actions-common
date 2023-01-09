@@ -1,0 +1,8 @@
+* PreferenceProperty null default crash ([817668bf](http://hydra/testProject/commit/817668bf18e9a8292a6baf87740a583b95f7173f))
+* add RxCoroutinesTimeMachine ([33a28b0f](http://hydra/testProject/commit/33a28b0fcf73dabf01395488ac1c4663ef06b162))
+* add SectionRecyclerAdapter.getInnerPosition docs ([017ffa99](http://hydra/testProject/commit/017ffa996837a25851f695203320cc268a4fdb2e))
+* remove ResourceLiveData.setValue deprecation ([1ef779cd](http://hydra/testProject/commit/1ef779cdc35cf5844bb78965658cb818901a61a6))
+* make LiveData observing utils inline ([340762cc](http://hydra/testProject/commit/340762ccc0ac26ab71c0579ac1f2a61211c0140c))
+* use SupervisorJob on ViewModel ([962b3eb5](http://hydra/testProject/commit/962b3eb5cd9c6c9673ab2d818a560fe1a18765bb))
+* add JUnit dependency ([fa5e0250](http://hydra/testProject/commit/fa5e0250f59bf5c8acdab7ae5e8070459a321a1d))
+* lock OnDemandProvider into mutex ([abd0ae70](http://hydra/testProject/commit/abd0ae703769b889814fc1c896b55e96a1e9dbce))
