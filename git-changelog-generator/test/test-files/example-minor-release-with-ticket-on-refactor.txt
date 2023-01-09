@@ -1,0 +1,83 @@
+commit abd0ae703769b889814fc1c896b55e96a1e9dbce
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-20T08:29:38+01:00
+
+    fix: lock OnDemandProvider into mutex
+    
+    This prevents thread synchronization errors.
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit fa5e0250f59bf5c8acdab7ae5e8070459a321a1d
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-20T07:57:01+01:00
+
+    test(retrofit): add JUnit dependency
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit 962b3eb5cd9c6c9673ab2d818a560fe1a18765bb
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-20T07:48:42+01:00
+
+    feat: use SupervisorJob on ViewModel
+    
+    This makes all jobs created by VM independent
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit 340762ccc0ac26ab71c0579ac1f2a61211c0140c
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-07T07:48:01+01:00
+
+    feat: make LiveData observing utils inline
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit 1ef779cdc35cf5844bb78965658cb818901a61a6
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-07T07:43:33+01:00
+
+    feat: remove ResourceLiveData.setValue deprecation
+    
+    Synchronous updating of LiveData still has its own uses, provided it is called on UI thread and outside any general try/catch blocks.
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit 017ffa996837a25851f695203320cc268a4fdb2e
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-07T07:42:04+01:00
+
+    [HD-123] docs: add SectionRecyclerAdapter.getInnerPosition docs
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit a1a2f8b747ac2f93afd03455da27d1008277050b
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-07T07:30:23+01:00
+
+    docs: add experimental suppress explanation
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit 33a28b0fcf73dabf01395488ac1c4663ef06b162
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-05T14:20:25+01:00
+
+    feat: add RxCoroutinesTimeMachine
+    
+    Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>
+
+commit c5062acebab8775afb400f42b27ee5dcc6ef4106
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-11-05T08:49:12+01:00
+
+    test: add RxCoroutinesTimeMachine
+
+commit 817668bf18e9a8292a6baf87740a583b95f7173f
+Author: Matej Drobnič <matej.drobnic@inova.si>
+Date:   2018-09-26T13:37:48+02:00
+
+    fix(android): PreferenceProperty null default crash
+    
+    This fixes bug where PreferenceProperty type is one of the Java's primitive types (int, long etc.) and its default value is null. Crash occures when trying to read non-null value from the preferences.
