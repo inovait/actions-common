@@ -53,9 +53,5 @@ test('generate changelog for commits without semantic data', () => {
     gitCommitUrlPrefix: 'http://hydra/testProject/commit/'
   })
 
-  console.log(expected)
-  console.log('---------')
-  console.log(actual)
-
   expect(actual).toBe(expected)
 })
