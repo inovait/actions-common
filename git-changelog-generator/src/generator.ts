@@ -11,22 +11,36 @@ export function generateChangelog(commits: Commit[], options: GenerationOptions)
 
   let changelog = ''
 
-  changelog += generateCommitCategory(parsedCommits, '', options)
+  changelog += generateCommitCategory(
+    parsedCommits.filter((commit) => commit.type == 'feat'),
+    'Features',
+    options
+  )
 
-  return changelog
+  changelog += generateCommitCategory(
+    parsedCommits.filter((commit) => commit.type == 'fix'),
+    'Bug Fixes',
+    options
+  )
+
+  changelog += generateCommitCategory(parsedCommits.filter((commit) => !commit.type), '', options)
+
+  return changelog.trim()
 }
 
 class ParsedCommit {
 
-  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string) {
+  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string) {
     this.commit = commit
     this.clearedMessage = clearedMessage
     this.scope = scope
     this.type = type
+    this.jiraTicket = jiraTicket
   }
 
   type?: string
   scope?: string
+  jiraTicket?: string
   clearedMessage: string
   commit: Commit
 }
@@ -48,6 +62,8 @@ export function generateCommitCategory(
 
   categoryText += generateCommitList(commits, options)
 
+  categoryText += "\n"
+
   return categoryText
 }
 
@@ -60,6 +76,10 @@ export function generateCommitList(
   for (let commit of commits) {
     listText += '* '
 
+    if (commit.scope) {
+      listText += `**${commit.scope}** `
+    }
+
     listText += commit.clearedMessage
     const sha = commit.commit.sha()
     listText += ` ([${sha.substring(0, 8)}](${options.gitCommitUrlPrefix}${sha}))\n`
@@ -69,5 +89,21 @@ export function generateCommitList(
 }
 
 export function parseCommits(commits: Commit[]): ParsedCommit[] {
-  return commits.map(rawCommit => new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined))
+  const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?:(.*)/
+
+  return commits.map(rawCommit => {
+    const match = commitRegex.exec(rawCommit.message())
+    if (match != null) {
+      return new ParsedCommit(
+        rawCommit,
+        match[6].trim(),
+        match[5],
+        match[3],
+        match[2],
+      )
+    } else {
+      return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined)
+    }
+  })
 }
+
