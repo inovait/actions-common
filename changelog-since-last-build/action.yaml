@@ -1,0 +1,29 @@
+name: 'Changelog since last successful build'
+description: 'Generate changelog of all commits made since the last successful build on that branch'
+inputs:
+  git_commit_url_prefix:
+    required: true
+    description: 'URL prefix that can be used to a commit from this project in the web browser. 
+    For example "https://github.com/inovait/actions-common/commit/" for actions-common repository.'
+  target_file:
+    description: 'If present, config will be written to this markdown file'
+  jira_url:
+    description: 'URL to the jira instance. If present, all JIRA ticket mentions will be linked'
+outputs:
+  changelog:
+    description: 'Changelog in the markdown format'
+    value: '{{ steps.internal_changelog.outputs.changelog }}'
+runs:
+  using: "composite"
+  steps:
+    - name: Derive appropriate SHAs for base and head for `nx affected` commands
+      uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf
+    - name: Generate Changelog
+      id: internal_changelog
+      uses: inovait/actions-common/git-changelog-generator@46744a98ddf47d8ec6c99e0b285a040c8ef16723
+      with:
+        from: '${{ env.NX_BASE }}'
+        to: '${{ env.NX_HEAD }}'
+        git_commit_url_prefix: '${{ inputs.git_commit_url_prefix }}'
+        jira_url: '${{ inputs.jira_url }}'
+        target_file: '${{ inputs.target_file }}'

@@ -49,3 +49,20 @@ Example usage:
       jira_url: 'https://inova-it.atlassian.net/'
       target_file: "CHANGELOG.MD"
 ```
+
+### Generate changelog since last successful build
+
+Action will generate Markdown changelog from all commits made since the last successful Workflow on this branch.
+
+Action behaves identically to the above changelog action, except that you do not pass `from` and `to` inputs.
+
+Example usage:
+
+```yaml
+  - name: Generate Changelog
+    uses: inovait/actions-common/changelog-since-last-build@main
+    with:
+      git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
+      jira_url: 'https://inova-it.atlassian.net/'
+      target_file: "CHANGELOG.MD"
+```
