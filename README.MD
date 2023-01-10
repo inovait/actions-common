@@ -28,3 +28,24 @@ Example usage:
   with:
     command: './gradlew connectedAndroidTest'
 ```
+
+## Changelog
+
+### Generate changelog from specified commit range
+
+(See [changelog's README.MD](git-changelog-generator/README.MD) for more info)
+
+Action will generate Markdown changelog from list of commits. 
+
+Example usage:
+
+```yaml
+  - name: Generate Changelog
+    uses: inovait/actions-common/git-changelog-generator@46744a98ddf47d8ec6c99e0b285a040c8ef16723
+    with:
+      from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
+      to: e31a0104ee0f9831e061a62c555c9db211885b1f
+      git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
+      jira_url: 'https://inova-it.atlassian.net/'
+      target_file: "CHANGELOG.MD"
+```
