@@ -1,6 +1,16 @@
-# Local cache action
+# Generate changelog action
 
 ## Usage
+
+Before you add the action, you have to enable deep checkout in your checkout action:
+
+```yaml
+- uses: actions/checkout@v3
+  with:
+    fetch-depth: 0
+```
+
+then you can add the changelog action:
 
 ```yaml
   - name: Generate Changelog
