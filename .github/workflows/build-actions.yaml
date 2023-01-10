@@ -25,5 +25,5 @@ jobs:
       - run: 'git config --global user.email "ci@inova.si"'
       - run: 'git config --global user.name "Build"'
       - run: 'git add dist/\*'
-      - run: 'git commit -m "ci: build actions"'
+      - run: 'git commit -m "ci: build actions" || true'
       - run: 'git push'
