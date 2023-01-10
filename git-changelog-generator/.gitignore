@@ -127,7 +127,7 @@ out
 .yarn/install-state.gz
 .pnp.*
 
-build
+/build
 
 .idea/modules.xml
 .idea/workspace.xml
