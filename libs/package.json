@@ -1,0 +1,26 @@
+{
+  "name": "action_common_libs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src/**/*.ts",
+    "all": "npm run lint && npm run build"
+  },
+  "dependencies": {
+    "nodegit": "0.27.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.18",
+    "@types/nodegit": "0.28.2",
+    "@typescript-eslint/eslint-plugin": "5.48.0",
+    "eslint": "8.31.0",
+    "eslint-config-standard-with-typescript": "24.0.0",
+    "eslint-plugin-github": "4.6.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-n": "15.6.0",
+    "eslint-plugin-promise": "6.1.1",
+    "typescript": "4.9.4"
+  }
+}
