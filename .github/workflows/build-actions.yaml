@@ -1,18 +1,16 @@
 name: build-actions
-run-name: Build actions on our own runners
+run-name: Build all actions
 on:
   push:
     branches:
       - main
     paths:
       - 'git-changelog-generator/**'
+      - 'spotlight-publish/**'
   workflow_dispatch:
 jobs:
   build-actions:
-    defaults:
-      run:
-        working-directory: ./git-changelog-generator
-    runs-on: "self-hosted"
+    runs-on: "bare"
     steps:
       - uses: actions/checkout@v3
       # Github Actions run with Node 16 for now, so we must build with Node 16
@@ -21,9 +19,16 @@ jobs:
           node-version: 16
       - run: "sudo apt-get install -y libkrb5-dev curl libcurl4 libssl-dev"
       - run: "npm ci"
+        working-directory: ./git-changelog-generator
       - run: "npm run all"
+        working-directory: ./git-changelog-generator
+      - run: "npm ci"
+        working-directory: ./spotlight-publish
+      - run: "npm run all"
+        working-directory: ./spotlight-publish
       - run: 'git config --global user.email "ci@inova.si"'
       - run: 'git config --global user.name "Build"'
-      - run: 'git add dist/\*'
+      - run: 'git add git-changelog-generator/dist/\*'
+      - run: 'git add spotlight-publish/dist/\*'
       - run: 'git commit -m "ci: build actions" || true'
       - run: 'git push'

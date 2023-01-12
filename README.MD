@@ -66,3 +66,35 @@ Example usage:
       jira_url: 'https://inova-it.atlassian.net/'
       target_file: "CHANGELOG.MD"
 ```
+
+## Publishing
+
+### Spotlight
+
+Action is used to publish files to Spotlight.
+
+Example usage:
+
+```yaml
+  - name: Publish to spotlight
+    uses: inovait/actions-common/spotlight-publish@main
+    with:
+      api_key: '...'
+      destination: 'release'
+      version: "1.2.3"
+      track: "Develop"
+      files: |
+        build/output/**/*.apk
+        CHANGELOG.MD
+```
+
+Arguments:
+
+* `api_key` - your API key for Spotlight, ideally stored in [Action Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
+* `destination` - Either `workspace` (publish files to Spotlight workspace) or `release` (make a new Spotlight release)
+* `files` - List of files to upload. You can use globs (**, *) and you can specify multiple files by specifying them in multiple lines.
+
+Extra arguments when `destination` is set to `release`:
+
+* `version` - Version to publish in semver format. Can be omitted when uploading ipa files, otherwise mandatory.
+* `track` - Name of the release track. Can be omitted when uploading ipa files, otherwise mandatory.
