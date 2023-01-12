@@ -11,7 +11,7 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@main
+- uses: inovait/actions-common/android-setup@11c3bbccb3ca9b203f5a1dc125ef5e3547d1c077
 ```
 
 ### Run with emulator
@@ -24,7 +24,7 @@ Example usage:
 
 ```yaml
 - name: Run Android Emulator tests
-  uses: inovait/actions-common/android-run-with-emulator@main
+  uses: inovait/actions-common/android-run-with-emulator@11c3bbccb3ca9b203f5a1dc125ef5e3547d1c077
   with:
     command: './gradlew connectedAndroidTest'
 ```
@@ -60,7 +60,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@main
+    uses: inovait/actions-common/changelog-since-last-build@11c3bbccb3ca9b203f5a1dc125ef5e3547d1c077
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -77,7 +77,7 @@ Example usage:
 
 ```yaml
   - name: Publish to spotlight
-    uses: inovait/actions-common/spotlight-publish@main
+    uses: inovait/actions-common/spotlight-publish@11c3bbccb3ca9b203f5a1dc125ef5e3547d1c077
     with:
       api_key: '...'
       destination: 'release'
