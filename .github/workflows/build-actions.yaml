@@ -7,10 +7,11 @@ on:
     paths:
       - 'git-changelog-generator/**'
       - 'spotlight-publish/**'
+      - '.github/workflows/build-actions.yaml'
   workflow_dispatch:
 jobs:
   build-actions:
-    runs-on: "bare"
+    runs-on: "node"
     steps:
       - uses: actions/checkout@v3
       # Github Actions run with Node 16 for now, so we must build with Node 16
