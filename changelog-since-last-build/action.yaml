@@ -16,6 +16,10 @@ outputs:
 runs:
   using: "composite"
   steps:
+    # nx-set-shas action needs at least node 16 installed
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
     - name: Derive appropriate SHAs for base and head for `nx affected` commands
       uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf
     - name: Generate Changelog
