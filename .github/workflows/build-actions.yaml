@@ -20,6 +20,11 @@ jobs:
         with:
           node-version: 16
       - run: "sudo apt-get install -y libkrb5-dev curl libcurl4 libssl-dev"
+      - uses: inovait/action-localcache@main
+        name: "Cache npm packages"
+        with:
+          folder: ~/.npm
+          key: ${{ runner.os }}-npm-packages
       - run: "npm ci"
         working-directory: ./libs
       - run: "npm ci"
