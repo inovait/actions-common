@@ -12,7 +12,7 @@ inputs:
 outputs:
   changelog:
     description: 'Changelog in the markdown format'
-    value: '{{ steps.internal_changelog.outputs.changelog }}'
+    value: '${{ steps.internal_changelog.outputs.changelog }}'
 runs:
   using: "composite"
   steps:
