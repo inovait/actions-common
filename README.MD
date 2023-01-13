@@ -98,3 +98,26 @@ Extra arguments when `destination` is set to `release`:
 
 * `version` - Version to publish in semver format. Can be omitted when uploading ipa files, otherwise mandatory.
 * `track` - Name of the release track. Can be omitted when uploading ipa files, otherwise mandatory.
+
+## Jira
+
+### Get Jira tickets mentioned in commits
+
+Inputs:
+
+* `from` (Required) - Commit to start generating changelog from (exclusive)
+* `to` (Optional) - Last commit (inclusive) to generate changelog from
+
+Outputs:
+
+* `tickets` - Comma-separated list of tickets
+
+```yaml
+- name: Get jira tickets
+  uses: inovait/actions-common/jira-get-tickets-from-commits@jira_publish
+  id: jira-tickets
+  with:
+    from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
+    to: 1b1a0f2f5790837d0986934ab080a02123cfd763
+- run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
+```
