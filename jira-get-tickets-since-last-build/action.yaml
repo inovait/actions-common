@@ -1,0 +1,21 @@
+name: 'Get jira tickets from commits since last successful build'
+description: 'Get all jira tickets that are mentioned in commits made since last successful build'
+outputs:
+  tickets:
+    description: 'Comma-separated list of found tickets'
+    value: '{{ steps.internal_jira.outputs.changelog }}'
+runs:
+  using: "composite"
+  steps:
+    # nx-set-shas action needs at least node 16 installed
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+    - name: Derive appropriate SHAs for base and head for `nx affected` commands
+      uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf
+    - name: Get jira tickets
+      uses: inovait/actions-common/jira-get-tickets-from-commits@jira_publish
+      id: internal_jira
+      with:
+        from: '${{ env.NX_BASE }}'
+        to: '${{ env.NX_HEAD }}'

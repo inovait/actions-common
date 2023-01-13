@@ -121,3 +121,15 @@ Outputs:
     to: 1b1a0f2f5790837d0986934ab080a02123cfd763
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
+
+### Get Jira tickets mentioned in commits since last successful build
+
+Action behaves identically to the above jira action, except that you do not pass `from` and `to` inputs.
+
+```yaml
+- name: Get jira tickets
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@jira_publish
+  id: jira-tickets
+- run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
+```
+
