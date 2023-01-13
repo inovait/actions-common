@@ -5,9 +5,6 @@ require('nodegit/dist/repository.js')
 require('nodegit/dist/commit.js')
 require('nodegit/dist/oid.js')
 
-// HACK: nodegit package is only declared in libs's package.json and other projects just inherit it.
-// Since package takes forever to build, this ensures speedy build times
-
 export async function gatherCommits(repository: Repository, fromSha: string, toSha: string): Promise<Commit[]> {
   const walker = Revwalk.create(repository)
   walker.pushHead()
