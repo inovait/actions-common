@@ -123,7 +123,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         match[5],
         match[3],
         match[2],
-        rawCommit.body().includes('BREAKING')
+        rawCommit.body()?.includes('BREAKING') ?? false
       )
     } else {
       return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined)
