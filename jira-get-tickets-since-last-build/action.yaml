@@ -3,7 +3,7 @@ description: 'Get all jira tickets that are mentioned in commits made since last
 outputs:
   tickets:
     description: 'Comma-separated list of found tickets'
-    value: '${{ steps.internal_jira.outputs.changelog }}'
+    value: '${{ steps.internal_jira.outputs.tickets }}'
 runs:
   using: "composite"
   steps:
@@ -19,3 +19,4 @@ runs:
       with:
         from: '${{ env.NX_BASE }}'
         to: '${{ env.NX_HEAD }}'
+
