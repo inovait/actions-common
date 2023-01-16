@@ -71,6 +71,7 @@ function main() {
             }
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
+                core.info(`Adding a comment to ${ticket.key}.`);
                 yield jira.addComment(ticket.key, comment);
             }
         }
@@ -58218,7 +58219,6 @@ function queryJiraTickets(jira) {
             }
             jql = `key in (${ticketKeys.join(',')})`;
         }
-        console.log(`JQL: "${jql}"`);
         const response = (yield jira.searchJira(jql));
         return response.issues;
     });
