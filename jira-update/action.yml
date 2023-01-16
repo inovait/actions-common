@@ -1,0 +1,14 @@
+name: 'Transition jira ticket(s) to a new state'
+description: 'Transition jira ticket(s) from one workflow state to another'
+inputs:
+  tickets:
+    description: 'Comma-separated list of found tickets to update. Mutually exclusive with `jql` argument.'
+  jql:
+    description: 'JQL statement that selects ticket to update. Mutually exclusive with `tickets` argument.'
+  fixVersion:
+    description: '(Optional) Set fix version for this ticket'
+  priority:
+    description: '(Optional) Set priority for this ticket'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

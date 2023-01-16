@@ -188,3 +188,27 @@ Example usage:
     from: 'In Progress'
     to: 'Ready to Test'
 ```
+
+### Update fields on jira ticket(s)
+
+Inputs:
+
+* `tickets` - Comma-separated list of tickets to update. Can be output of the above "get jira tickets" task.
+* `jql` - [JQL](https://gist.github.com/emmajane/59321345a81a4f5837c0) query. When specified, 
+action will update all tickets that match this JQL for transition.  
+(either `tickets` or `jql` is required)
+
+Possible fields to update:
+
+`fixVersion`, `priority`
+
+Example usage:
+
+```yaml
+- name: Update jira tickets
+  uses: inovait/actions-common/jira-update@jira_publish
+  with:
+    tickets: JT-1,JT-2
+    fixVersion: '1.0.0'
+    priority: 'Low'
+```
