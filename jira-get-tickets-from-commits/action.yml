@@ -1,0 +1,15 @@
+name: 'Get jira tickets from commits'
+description: 'Get all jira tickets that are mentioned in commits inside provided range'
+inputs:
+  to:
+    description: 'Last commit (inclusive) included in ticket search'
+    default: 'HEAD'
+  from:
+    description: 'Commit to start searching tickets from (exclusive)'
+    required: true
+outputs:
+  tickets:
+    description: 'Comma-separated list of found tickets'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

@@ -1,0 +1,15 @@
+name: 'Transition jira ticket(s) to a new state'
+description: 'Transition jira ticket(s) from one workflow state to another'
+inputs:
+  tickets:
+    description: 'Comma-separated list of found tickets to comment on. Mutually exclusive with `jql` argument.'
+  jql:
+    description: 'JQL statement that selects ticket to comment on. Mutually exclusive with `tickets` argument.'
+  from:
+    description: '(Optional) Only transition tickets that are in this state'
+  to:
+    description: 'Name of the state to transition to'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

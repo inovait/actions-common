@@ -1,0 +1,22 @@
+name: 'Make a comment on Jira tickets'
+description: 'Make a comment on all provided jira tickets'
+inputs:
+  tickets:
+    description: 'Comma-separated list of found tickets to comment on. Mutually exlusive with `jql` argument.'
+  jql:
+    description: 'JQL statement that selects ticket to comment on. Mutually exlusive with `tickets` argument.'
+  comment:
+    description: 'Comment to make'
+    required: true
+  jiraUsername:
+    description: 'Username of the user to login with to Jira'
+    required: true
+  jiraToken:
+    description: 'API Token of the user to login to Jira'
+    required: true
+  jiraUrl:
+    description: 'URL of the Jira site'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

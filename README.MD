@@ -98,3 +98,117 @@ Extra arguments when `destination` is set to `release`:
 
 * `version` - Version to publish in semver format. Can be omitted when uploading ipa files, otherwise mandatory.
 * `track` - Name of the release track. Can be omitted when uploading ipa files, otherwise mandatory.
+
+## Jira
+
+### Get Jira tickets mentioned in commits
+
+Inputs:
+
+* `from` (Required) - Commit to start generating changelog from (exclusive)
+* `to` (Optional) - Last commit (inclusive) to generate changelog from
+
+Outputs:
+
+* `tickets` - Comma-separated list of tickets
+
+```yaml
+- name: Get jira tickets
+  uses: inovait/actions-common/jira-get-tickets-from-commits@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  id: jira-tickets
+  with:
+    from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
+    to: 1b1a0f2f5790837d0986934ab080a02123cfd763
+- run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
+```
+
+### Get Jira tickets mentioned in commits since last successful build
+
+Action behaves identically to the above jira action, except that you do not pass `from` and `to` inputs.
+
+```yaml
+- name: Get jira tickets
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  id: jira-tickets
+- run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
+```
+
+### Login
+
+Before you do any of the below actions, you have to login to Jira. See [Jira Login](https://github.com/marketplace/actions/jira-login) for more info.
+
+Example usage:
+
+```yaml
+- name: Login to Jira
+  uses: atlassian/gajira-login@40890b68ae12fed6b67ed1d0e31e9fd1912746ac
+  env:
+    JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+    JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+    JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+```
+
+### Add a comment to jira ticket(s)
+
+Inputs:
+
+* `tickets` - Comma-separated list of tickets. Can be output of the above "get jira tickets" task.
+* `jql` - [JQL](https://gist.github.com/emmajane/59321345a81a4f5837c0) query. When specified, action will add a comment to all tickets that match this JQL.  
+  (either `tickets` or `jql` is required)
+* `comment` - Comment to make. Can be in [Atlassian Document Format](https://developer.atlassian.com/cloud/jira/platform/apis/document/playground/).
+
+Example usage:
+
+```yaml
+- name: Make a jira comment
+  uses: inovait/actions-common/jira-comment@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  with:
+    tickets: JT-1,JT-2
+    comment: 'This ticket is included in build 1.2.${{ env.BUILD_NUMBER }}.'
+```
+
+### Transition jira ticket(s)
+
+Inputs:
+
+* `tickets` - Comma-separated list of tickets to transition. Can be output of the above "get jira tickets" task.
+* `jql` - [JQL](https://gist.github.com/emmajane/59321345a81a4f5837c0) query. When specified, 
+action will consider all tickets that match this JQL for transition.  
+  (either `tickets` or `jql` is required)
+* `from` - (Optional) Only transition tickets that are currently in this state
+* `to` - State to transition to
+
+Example usage:
+
+```yaml
+- name: Transition tickets to test
+  uses: inovait/actions-common/jira-transition@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  with:
+    tickets: JT-1,JT-2
+    from: 'In Progress'
+    to: 'Ready to Test'
+```
+
+### Update fields on jira ticket(s)
+
+Inputs:
+
+* `tickets` - Comma-separated list of tickets to update. Can be output of the above "get jira tickets" task.
+* `jql` - [JQL](https://gist.github.com/emmajane/59321345a81a4f5837c0) query. When specified, 
+action will update all tickets that match this JQL for transition.  
+(either `tickets` or `jql` is required)
+
+Possible fields to update:
+
+`fixVersion`, `priority`
+
+Example usage:
+
+```yaml
+- name: Update jira tickets
+  uses: inovait/actions-common/jira-update@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  with:
+    tickets: JT-1,JT-2
+    fixVersion: '1.0.0'
+    priority: 'Low'
+```
