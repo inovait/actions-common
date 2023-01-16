@@ -33,6 +33,8 @@ async function main(): Promise<void> {
     const tickets = await queryJiraTickets(jira)
 
     for (const ticket of tickets) {
+      core.info(`Adding a comment to ${ticket.key}.`)
+
       await jira.addComment(ticket.key, comment)
     }
   } catch (error: any) {

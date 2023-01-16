@@ -8,6 +8,7 @@ on:
       - 'libs/**'
       - 'jira-get-tickets-from-commits/**'
       - 'jira-comment/**'
+      - 'jira-transition/**'
       - '.github/workflows/build-actions.yaml'
   workflow_dispatch:
 jobs:
@@ -55,11 +56,16 @@ jobs:
         working-directory: ./jira-comment
       - run: "npm run all"
         working-directory: ./jira-comment
+      - run: "npm ci"
+        working-directory: ./jira-transition
+      - run: "npm run all"
+        working-directory: ./jira-transition
       - run: 'git config --global user.email "ci@inova.si"'
       - run: 'git config --global user.name "Build"'
       - run: 'git add git-changelog-generator/dist/\*'
       - run: 'git add spotlight-publish/dist/\*'
       - run: 'git add jira-get-tickets-from-commits/dist/\*'
       - run: 'git add jira-comment/dist/\*'
+      - run: 'git add jira-transition/dist/\*'
       - run: 'git commit -m "ci: build actions" || true'
       - run: 'git push'

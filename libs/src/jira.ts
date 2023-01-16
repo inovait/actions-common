@@ -7,8 +7,22 @@ interface SearchResponse {
   issues: JiraTicket[]
 }
 
+/**
+ * IssueBean. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get
+ */
 export interface JiraTicket {
   key: string
+  fields: TicketFields
+}
+
+export interface TicketFields {
+  status: TicketStatus
+  [name: string]: any
+}
+
+export interface TicketStatus {
+  id: string
+  name: string
 }
 
 export async function getJiraClient(): Promise<JiraApi> {
