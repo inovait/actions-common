@@ -19,18 +19,22 @@ export class ParsedCommit {
 }
 
 export function parseCommits(commits: Commit[]): ParsedCommit[] {
-  const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?:(.*)/
+  const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
   return commits.map(rawCommit => {
     const match = commitRegex.exec(rawCommit.message())
     if (match != null) {
+      const breaking = (rawCommit.body()?.includes('BREAKING') ?? false) || (
+        match[6] != null && match[6].trim().length > 0
+      )
+
       return new ParsedCommit(
         rawCommit,
-        match[6].trim(),
+        match[7].trim(),
         match[5],
         match[3],
         match[2],
-        rawCommit.body()?.includes('BREAKING') ?? false
+        breaking
       )
     } else {
       return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined)
