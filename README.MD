@@ -114,7 +114,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@jira_publish
+  uses: inovait/actions-common/jira-get-tickets-from-commits@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -128,7 +128,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@jira_publish
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
@@ -161,7 +161,7 @@ Example usage:
 
 ```yaml
 - name: Make a jira comment
-  uses: inovait/actions-common/jira-comment@jira_publish
+  uses: inovait/actions-common/jira-comment@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
   with:
     tickets: JT-1,JT-2
     comment: 'This ticket is included in build 1.2.${{ env.BUILD_NUMBER }}.'
@@ -182,7 +182,7 @@ Example usage:
 
 ```yaml
 - name: Transition tickets to test
-  uses: inovait/actions-common/jira-transition@jira_publish
+  uses: inovait/actions-common/jira-transition@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
   with:
     tickets: JT-1,JT-2
     from: 'In Progress'
@@ -206,7 +206,7 @@ Example usage:
 
 ```yaml
 - name: Update jira tickets
-  uses: inovait/actions-common/jira-update@jira_publish
+  uses: inovait/actions-common/jira-update@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
   with:
     tickets: JT-1,JT-2
     fixVersion: '1.0.0'
