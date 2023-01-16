@@ -42,37 +42,38 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const jira_1 = __nccwpck_require__(6965);
 function main() {
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const rawComment = core.getInput('comment', { required: true });
+            const from = (_b = (_a = core.getInput('from')) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === null || _b === void 0 ? void 0 : _b.trim();
+            const to = (_c = core.getInput('to', { required: true }).toLowerCase()) === null || _c === void 0 ? void 0 : _c.trim();
             const jira = yield (0, jira_1.getJiraClient)();
-            // Attempt to parse JSON if comment is in Atlassian Document Format
-            let comment;
-            try {
-                comment = JSON.parse(rawComment);
-            }
-            catch (e) {
-                // Comment is not in ADF format, convert it.
-                comment = {
-                    version: 1,
-                    type: 'doc',
-                    content: [
-                        {
-                            type: 'paragraph',
-                            content: [
-                                {
-                                    type: 'text',
-                                    text: rawComment
-                                }
-                            ]
-                        }
-                    ]
-                };
-            }
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
-                core.info(`Adding a comment to ${ticket.key}.`);
-                yield jira.addComment(ticket.key, comment);
+                const status = ticket.fields.status;
+                if (from != null && from.length > 0 && ((_d = status.name) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== from) {
+                    core.info(`Ticket ${ticket.key} is not in '${from}', but in '${status.name}'. Skipping...`);
+                    continue;
+                }
+                const allPossibleTransitions = yield jira.listTransitions(ticket.key);
+                let targetTransition = null;
+                for (const transition of allPossibleTransitions.transitions) {
+                    if (transition.name.toLowerCase() === to) {
+                        targetTransition = transition;
+                        break;
+                    }
+                }
+                if (targetTransition == null) {
+                    const possibleTransitionsText = allPossibleTransitions.transitions.map((t) => t.name).join(', ');
+                    core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`);
+                    return;
+                }
+                core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
+                yield jira.transitionIssue(ticket.key, {
+                    transition: {
+                        id: targetTransition.id
+                    }
+                });
             }
         }
         catch (error) {

@@ -44,35 +44,39 @@ const jira_1 = __nccwpck_require__(6965);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const rawComment = core.getInput('comment', { required: true });
+            const fixVersion = core.getInput('fixVersion', { trimWhitespace: true });
+            const priority = core.getInput('priority', { trimWhitespace: true });
             const jira = yield (0, jira_1.getJiraClient)();
-            // Attempt to parse JSON if comment is in Atlassian Document Format
-            let comment;
-            try {
-                comment = JSON.parse(rawComment);
-            }
-            catch (e) {
-                // Comment is not in ADF format, convert it.
-                comment = {
-                    version: 1,
-                    type: 'doc',
-                    content: [
-                        {
-                            type: 'paragraph',
-                            content: [
-                                {
-                                    type: 'text',
-                                    text: rawComment
-                                }
-                            ]
-                        }
-                    ]
-                };
-            }
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
-                core.info(`Adding a comment to ${ticket.key}.`);
-                yield jira.addComment(ticket.key, comment);
+                const updateObject = {};
+                let performRegularUpdate = false;
+                if (fixVersion != null && fixVersion.length !== 0) {
+                    updateObject.fixVersions = [
+                        {
+                            add: {
+                                name: fixVersion
+                            }
+                        }
+                    ];
+                    performRegularUpdate = true;
+                }
+                if (priority != null && priority.length !== 0) {
+                    updateObject.priority = [
+                        {
+                            set: {
+                                name: priority
+                            }
+                        }
+                    ];
+                    performRegularUpdate = true;
+                }
+                console.info(`Updating ${ticket.key}`);
+                if (performRegularUpdate) {
+                    yield jira.updateIssue(ticket.key, {
+                        update: updateObject
+                    });
+                }
             }
         }
         catch (error) {
