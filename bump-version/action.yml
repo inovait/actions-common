@@ -1,0 +1,22 @@
+name: 'Bump version'
+description: 'Bump version of the app. In auto mode, action will search through commits and automatically 
+              determine the version to bump, inferring from conventional commits spec.'
+inputs:
+  version:
+    description: 'Current/old version. Mutually exclusive with `versionFile` argument.'
+  versionFile:
+    description: 'text file that contains current version. Mutually exclusive with `version` argument.'
+  increment:
+    description: 'Which version to increment. Either `major`, `minor`, `patch` or `auto`'
+    required: true
+  to:
+    description: 'Last commit (inclusive) included in commit search, for auto mode'
+    default: 'HEAD'
+  from:
+    description: 'Commit to start searching commits from (exclusive), required in auto mode'
+outputs:
+  version:
+    description: "New Version"
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

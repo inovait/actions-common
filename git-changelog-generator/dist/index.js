@@ -2,15 +2,16 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 2953:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.parseCommits = exports.generateCommitList = exports.generateCommitCategory = exports.generateChangelog = void 0;
+exports.generateCommitList = exports.generateCommitCategory = exports.generateChangelog = void 0;
+const commit_parsing_1 = __nccwpck_require__(6928);
 function generateChangelog(commits, options) {
     const sortedCommits = commits.sort((a, b) => { return a.date().getTime() > b.date().getDate() ? -1 : 1; });
-    const parsedCommits = parseCommits(sortedCommits);
+    const parsedCommits = (0, commit_parsing_1.parseCommits)(sortedCommits);
     let changelog = '';
     changelog += generateCommitCategory(parsedCommits.filter((commit) => (commit.breaking === true) && commit.type === 'feat'), 'BREAKING Features', options);
     changelog += generateCommitCategory(parsedCommits.filter((commit) => (commit.breaking === true) && commit.type === 'fix'), 'BREAKING Bug Fixes', options);
@@ -21,16 +22,6 @@ function generateChangelog(commits, options) {
     return changelog.trim();
 }
 exports.generateChangelog = generateChangelog;
-class ParsedCommit {
-    constructor(commit, clearedMessage, scope, type, jiraTicket, breaking) {
-        this.commit = commit;
-        this.clearedMessage = clearedMessage;
-        this.scope = scope;
-        this.type = type;
-        this.jiraTicket = jiraTicket;
-        this.breaking = breaking;
-    }
-}
 function generateCommitCategory(commits, categoryTitle, options) {
     if (commits.length === 0) {
         return '';
@@ -61,20 +52,6 @@ function generateCommitList(commits, options) {
     return listText;
 }
 exports.generateCommitList = generateCommitList;
-function parseCommits(commits) {
-    const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?:(.*)/;
-    return commits.map(rawCommit => {
-        var _a, _b;
-        const match = commitRegex.exec(rawCommit.message());
-        if (match != null) {
-            return new ParsedCommit(rawCommit, match[6].trim(), match[5], match[3], match[2], (_b = (_a = rawCommit.body()) === null || _a === void 0 ? void 0 : _a.includes('BREAKING')) !== null && _b !== void 0 ? _b : false);
-        }
-        else {
-            return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined);
-        }
-    });
-}
-exports.parseCommits = parseCommits;
 
 
 /***/ }),
@@ -54689,6 +54666,43 @@ function gatherCommits(repository, fromSha, toSha) {
     });
 }
 exports.gatherCommits = gatherCommits;
+
+
+/***/ }),
+
+/***/ 6928:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseCommits = exports.ParsedCommit = void 0;
+class ParsedCommit {
+    constructor(commit, clearedMessage, scope, type, jiraTicket, breaking) {
+        this.commit = commit;
+        this.clearedMessage = clearedMessage;
+        this.scope = scope;
+        this.type = type;
+        this.jiraTicket = jiraTicket;
+        this.breaking = breaking;
+    }
+}
+exports.ParsedCommit = ParsedCommit;
+function parseCommits(commits) {
+    const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
+    return commits.map(rawCommit => {
+        var _a, _b;
+        const match = commitRegex.exec(rawCommit.message());
+        if (match != null) {
+            const breaking = ((_b = (_a = rawCommit.body()) === null || _a === void 0 ? void 0 : _a.includes('BREAKING')) !== null && _b !== void 0 ? _b : false) || (match[6] != null && match[6].trim().length > 0);
+            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], match[2], breaking);
+        }
+        else {
+            return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined);
+        }
+    });
+}
+exports.parseCommits = parseCommits;
 
 
 /***/ }),

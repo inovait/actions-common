@@ -212,3 +212,66 @@ Example usage:
     fixVersion: '1.0.0'
     priority: 'Low'
 ```
+
+# Versioning
+
+## Bump version
+
+Increase semantic version. Version can be input in two ways:
+
+* `version` - direct old version input, feel free to use github action contexts. 
+New version can be accessed using `output` action output.
+* `versionFile` - old version is read from the specified text file, and new version is written back to the file
+
+You also need to specify `increment` which tells the action which part of the version should be bumped. 
+Can be `major`, `minor`, `patch` or `auto`.
+
+In `auto` mode, release type will be automatically selected based on commit messages from provided range. Commits need to follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec for this to work. You also need to specify these in auto mode:
+
+* `from` (Required) - Commit to start searching from (exclusive)
+* `to` (Optional) - Last commit (inclusive) to include in search
+
+
+Example usage:
+
+```yaml
+- name: Bump minor version
+  uses: inovait/actions-common/bump-version@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  with:
+    versionFile: 'version.txt'
+    increment: minor
+```
+
+```yaml
+- name: Bump major version from file
+  id: version-step
+  uses: inovait/actions-common/bump-version@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  with:
+    version: '1.0.0'
+    increment: major
+- echo: 'New version: ${{ steps.version-step.outputs.version }}'
+```
+
+```yaml
+- name: Bump version from commits
+  id: version-step
+  uses: inovait/actions-common/bump-version@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  with:
+    versionFile: 'version.txt'
+    increment: auto
+    from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
+    to: 1b1a0f2f5790837d0986934ab080a02123cfd763
+```
+
+## Bump version from commits since last build
+
+Action behaves identically to the above version bump action, except that `increment` is always `auto` and 
+you do not pass `from` and `to` inputs - they will be automatically populated to include all commits made since last successful build of this workflow.
+
+```yaml
+- name: Bump version from commits since last build
+  id: version-step
+  uses: inovait/actions-common/bump-version-since-last-build@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  with:
+    versionFile: 'version.txt'
+```

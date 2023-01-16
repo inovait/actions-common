@@ -10,6 +10,7 @@ on:
       - 'jira-comment/**'
       - 'jira-transition/**'
       - 'jira-update/**'
+      - 'bump-version/**'
       - '.github/workflows/build-actions.yaml'
   workflow_dispatch:
 jobs:
@@ -38,9 +39,11 @@ jobs:
         working-directory: ./libs
         # Hack: because nodegit install takes forever, copy it from one lib to another
       - run: "mkdir git-changelog-generator/node_modules"
-      - run: "mkdir jira-get-tickets-from-commits/node_modules"
       - run: "cp -r libs/node_modules/nodegit git-changelog-generator/node_modules/"
+      - run: "mkdir jira-get-tickets-from-commits/node_modules"
       - run: "cp -r libs/node_modules/nodegit jira-get-tickets-from-commits/node_modules/"
+      - run: "mkdir bump-version/node_modules"
+      - run: "cp -r libs/node_modules/nodegit bump-version/node_modules/"
       - run: "npm install"
         working-directory: ./git-changelog-generator
       - run: "npm run all"
@@ -65,6 +68,10 @@ jobs:
         working-directory: ./jira-update
       - run: "npm run all"
         working-directory: ./jira-update
+      - run: "npm install"
+        working-directory: ./bump-version
+      - run: "npm run all"
+        working-directory: ./bump-version
       - run: 'git config --global user.email "ci@inova.si"'
       - run: 'git config --global user.name "Build"'
       - run: 'git add git-changelog-generator/dist/\*'
@@ -73,5 +80,6 @@ jobs:
       - run: 'git add jira-comment/dist/\*'
       - run: 'git add jira-transition/dist/\*'
       - run: 'git add jira-update/dist/\*'
+      - run: 'git add bump-version/dist/\*'
       - run: 'git commit -m "ci: build actions" || true'
       - run: 'git push'
