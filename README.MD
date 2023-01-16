@@ -243,7 +243,7 @@ Example usage:
 ```
 
 ```yaml
-- name: Bump minor version
+- name: Bump major version from file
   id: version-step
   uses: inovait/actions-common/bump-version@version-bump
   with:
@@ -253,7 +253,7 @@ Example usage:
 ```
 
 ```yaml
-- name: Bump minor version
+- name: Bump version from commits
   id: version-step
   uses: inovait/actions-common/bump-version@version-bump
   with:
@@ -261,4 +261,17 @@ Example usage:
     increment: auto
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
     to: 1b1a0f2f5790837d0986934ab080a02123cfd763
+```
+
+## Bump version from commits since last build
+
+Action behaves identically to the above version bump action, except that `increment` is always `auto` and 
+you do not pass `from` and `to` inputs - they will be automatically populated to include all commits made since last successful build of this workflow.
+
+```yaml
+- name: Bump version from commits since last build
+  id: version-step
+  uses: inovait/actions-common/bump-version-since-last-build@version-bump
+  with:
+    versionFile: 'version.txt'
 ```
