@@ -7,12 +7,12 @@ runs:
       with:
         java-version: '11'
         distribution: temurin
-    - uses: inovait/action-localcache@main
+    - uses: inovait/action-localcache@c3d5f2711aafefcf6560cae276700595cf102a9e
       name: "Cache gradle wrapper"
       with:
         folder: ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-wrapper
-    - uses: inovait/action-localcache@main
+    - uses: inovait/action-localcache@c3d5f2711aafefcf6560cae276700595cf102a9e
       name: "Cache gradle dependencies"
       with:
         folder: ~/.gradle/caches
