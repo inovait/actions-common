@@ -507,7 +507,7 @@ test('show Jira tickets and links if Jira URL is not provided', () => {
         '340762ccc0ac26ab71c0579ac1f2a61211c0140c',
         'feat: make LiveData observing utils inline',
         '2018-11-07T07:48:01+01:00',
-        'Signed-off-by: Matej Drobnič <matej.drobnic@inova.si>',
+        'This fixes HA-578.\n\nSigned-off-by: Matej Drobnič <matej.drobnic@inova.si>',
       ),
       createFakeCommit(
         '1ef779cdc35cf5844bb78965658cb818901a61a6',

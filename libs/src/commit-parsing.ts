@@ -28,12 +28,21 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         match[6] != null && match[6].trim().length > 0
       )
 
+      let jiraTicket = match[2]
+      if (jiraTicket == null) {
+        const body = rawCommit.body() ?? ''
+        const jiraMatchInBody = JIRA_REGEX.exec(body)
+        if (jiraMatchInBody != null) {
+          jiraTicket = jiraMatchInBody[0]
+        }
+      }
+
       return new ParsedCommit(
         rawCommit,
         match[7].trim(),
         match[5],
         match[3],
-        match[2],
+        jiraTicket,
         breaking
       )
     } else {
@@ -41,3 +50,5 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
     }
   })
 }
+
+const JIRA_REGEX = /[A-Z]{2,4}-[0-9]+/g

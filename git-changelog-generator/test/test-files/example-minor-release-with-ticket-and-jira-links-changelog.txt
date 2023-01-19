@@ -2,7 +2,7 @@
 
 * add RxCoroutinesTimeMachine ([33a28b0f](http://hydra/testProject/commit/33a28b0fcf73dabf01395488ac1c4663ef06b162))
 * remove ResourceLiveData.setValue deprecation ([1ef779cd](http://hydra/testProject/commit/1ef779cdc35cf5844bb78965658cb818901a61a6))
-* make LiveData observing utils inline ([340762cc](http://hydra/testProject/commit/340762ccc0ac26ab71c0579ac1f2a61211c0140c))
+* [HA-578](https://my-jira.atlassian.net/browse/HA-578) - make LiveData observing utils inline ([340762cc](http://hydra/testProject/commit/340762ccc0ac26ab71c0579ac1f2a61211c0140c))
 * [HD-123](https://my-jira.atlassian.net/browse/HD-123) - use SupervisorJob on ViewModel ([962b3eb5](http://hydra/testProject/commit/962b3eb5cd9c6c9673ab2d818a560fe1a18765bb))
 
 ### Bug Fixes
