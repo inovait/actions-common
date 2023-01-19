@@ -114,7 +114,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  uses: inovait/actions-common/jira-get-tickets-from-commits@ea84a45633ff09f1ccc231bd81252039afdd321a
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -128,7 +128,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@ea84a45633ff09f1ccc231bd81252039afdd321a
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
