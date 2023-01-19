@@ -57858,11 +57858,19 @@ exports.ParsedCommit = ParsedCommit;
 function parseCommits(commits) {
     const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
     return commits.map(rawCommit => {
-        var _a, _b;
+        var _a, _b, _c;
         const match = commitRegex.exec(rawCommit.message());
         if (match != null) {
             const breaking = ((_b = (_a = rawCommit.body()) === null || _a === void 0 ? void 0 : _a.includes('BREAKING')) !== null && _b !== void 0 ? _b : false) || (match[6] != null && match[6].trim().length > 0);
-            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], match[2], breaking);
+            let jiraTicket = match[2];
+            if (jiraTicket == null) {
+                const body = (_c = rawCommit.body()) !== null && _c !== void 0 ? _c : '';
+                const jiraMatchInBody = JIRA_REGEX.exec(body);
+                if (jiraMatchInBody != null) {
+                    jiraTicket = jiraMatchInBody[0];
+                }
+            }
+            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], jiraTicket, breaking);
         }
         else {
             return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined);
@@ -57870,6 +57878,7 @@ function parseCommits(commits) {
     });
 }
 exports.parseCommits = parseCommits;
+const JIRA_REGEX = /[A-Z]{2,4}-[0-9]+/g;
 
 
 /***/ }),
