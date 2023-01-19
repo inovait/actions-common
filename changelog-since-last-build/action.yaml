@@ -24,7 +24,7 @@ runs:
       uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf
     - name: Generate Changelog
       id: internal_changelog
-      uses: inovait/actions-common/git-changelog-generator@46744a98ddf47d8ec6c99e0b285a040c8ef16723
+      uses: inovait/actions-common/git-changelog-generator@f2b952d7c7b689e9ea883804d06f65f2497335d1
       with:
         from: '${{ env.NX_BASE }}'
         to: '${{ env.NX_HEAD }}'
