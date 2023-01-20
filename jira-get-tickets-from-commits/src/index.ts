@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import { Repository } from 'nodegit'
 import { gatherCommits } from 'action_common_libs/src/commit-gathering'
+import { getJiraTickets } from './detector'
 
 // These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
 require('nodegit/dist/repository.js')
@@ -15,16 +16,7 @@ async function main(): Promise<void> {
     const repo = await Repository.open('.')
     const commits = await gatherCommits(repo, fromCommit, toCommit)
 
-    const tickets: string[] = []
-
-    for (const commit of commits) {
-      searchForTickets(commit.message(), tickets)
-      const body = commit.body()
-      if (body != null) {
-        searchForTickets(body, tickets)
-      }
-    }
-
+    const tickets = getJiraTickets(commits)
     core.setOutput('tickets', tickets.join(','))
   } catch (error: any) {
     console.log(error)
@@ -32,20 +24,4 @@ async function main(): Promise<void> {
   }
 }
 
-function searchForTickets(text: any, target: string[]): void {
-  while (true) {
-    const match = JIRA_REGEX.exec(text)
-    if (match == null) {
-      break
-    }
-
-    const ticketName = match[0]
-    if (!target.includes(ticketName)) {
-      target.push(ticketName)
-    }
-  }
-}
-
 void main()
-
-const JIRA_REGEX = /[A-Z]{2,4}-[0-9]+/g
