@@ -107,6 +107,7 @@ Inputs:
 
 * `from` (Required) - Commit to start generating changelog from (exclusive)
 * `to` (Optional) - Last commit (inclusive) to generate changelog from
+* `onlyResolvedTickets` (Optional) - When set to `true`, only include tickets where ticket mention in commit is preceded by a [resolution keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) (for example `fixes ABC-123` instead of just `ABC-123`)
 
 Outputs:
 
@@ -114,7 +115,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@ea84a45633ff09f1ccc231bd81252039afdd321a
+  uses: inovait/actions-common/jira-get-tickets-from-commits@fc52f3b65dc2ad944f5eada357b583b093bd7ff4
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -128,7 +129,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@ea84a45633ff09f1ccc231bd81252039afdd321a
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@fc52f3b65dc2ad944f5eada357b583b093bd7ff4
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```

@@ -1,13 +1,14 @@
 import { Commit } from 'nodegit'
 
 export class ParsedCommit {
-  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean) {
+  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
     this.commit = commit
     this.clearedMessage = clearedMessage
     this.scope = scope
     this.type = type
     this.jiraTicket = jiraTicket
     this.breaking = breaking
+    this.isCommitResolved = isCommitResolved
   }
 
   type?: string
@@ -16,6 +17,7 @@ export class ParsedCommit {
   clearedMessage: string
   commit: Commit
   breaking?: boolean
+  isCommitResolved?: boolean
 }
 
 export function parseCommits(commits: Commit[]): ParsedCommit[] {
@@ -29,11 +31,18 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
       )
 
       let jiraTicket = match[2]
+      let commitResolved: boolean = false
       if (jiraTicket == null) {
+        const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g
         const body = rawCommit.body() ?? ''
-        const jiraMatchInBody = JIRA_REGEX.exec(body)
+        const jiraMatchInBody = jiraRegex.exec(body)
         if (jiraMatchInBody != null) {
-          jiraTicket = jiraMatchInBody[0]
+          jiraTicket = jiraMatchInBody[3]
+          const keyword = jiraMatchInBody[2]
+
+          if (resolveKeywords.includes(keyword)) {
+            commitResolved = true
+          }
         }
       }
 
@@ -43,7 +52,8 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         match[5],
         match[3],
         jiraTicket,
-        breaking
+        breaking,
+        commitResolved
       )
     } else {
       return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined)
@@ -51,4 +61,16 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
   })
 }
 
-const JIRA_REGEX = /[A-Z]{2,4}-[0-9]+/g
+const resolveKeywords = [
+  'close',
+  'closes',
+  'closed',
+  'fix',
+  'fixes',
+  'fixed',
+  'resolve',
+  'resolves',
+  'resolved',
+]
+
+
