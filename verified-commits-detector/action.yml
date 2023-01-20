@@ -1,0 +1,15 @@
+name: 'Get last commit that has a verified jira ticket'
+description: 'TODO'
+inputs:
+  to:
+    description: 'Last commit (inclusive) included in ticket search'
+    default: 'HEAD'
+  from:
+    description: 'Commit to start searching tickets from (exclusive)'
+    required: true
+outputs:
+  tickets:
+    description: 'Comma-separated list of found tickets'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
