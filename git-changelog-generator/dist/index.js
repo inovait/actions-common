@@ -54678,13 +54678,14 @@ exports.gatherCommits = gatherCommits;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseCommits = exports.ParsedCommit = void 0;
 class ParsedCommit {
-    constructor(commit, clearedMessage, scope, type, jiraTicket, breaking) {
+    constructor(commit, clearedMessage, scope, type, jiraTicket, breaking, isCommitResolved) {
         this.commit = commit;
         this.clearedMessage = clearedMessage;
         this.scope = scope;
         this.type = type;
         this.jiraTicket = jiraTicket;
         this.breaking = breaking;
+        this.isCommitResolved = isCommitResolved;
     }
 }
 exports.ParsedCommit = ParsedCommit;
@@ -54696,14 +54697,20 @@ function parseCommits(commits) {
         if (match != null) {
             const breaking = ((_b = (_a = rawCommit.body()) === null || _a === void 0 ? void 0 : _a.includes('BREAKING')) !== null && _b !== void 0 ? _b : false) || (match[6] != null && match[6].trim().length > 0);
             let jiraTicket = match[2];
+            let commitResolved = false;
             if (jiraTicket == null) {
+                const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g;
                 const body = (_c = rawCommit.body()) !== null && _c !== void 0 ? _c : '';
-                const jiraMatchInBody = JIRA_REGEX.exec(body);
+                const jiraMatchInBody = jiraRegex.exec(body);
                 if (jiraMatchInBody != null) {
-                    jiraTicket = jiraMatchInBody[0];
+                    jiraTicket = jiraMatchInBody[3];
+                    const keyword = jiraMatchInBody[2];
+                    if (resolveKeywords.includes(keyword)) {
+                        commitResolved = true;
+                    }
                 }
             }
-            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], jiraTicket, breaking);
+            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], jiraTicket, breaking, commitResolved);
         }
         else {
             return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined);
@@ -54711,7 +54718,17 @@ function parseCommits(commits) {
     });
 }
 exports.parseCommits = parseCommits;
-const JIRA_REGEX = /[A-Z]{2,4}-[0-9]+/g;
+const resolveKeywords = [
+    'close',
+    'closes',
+    'closed',
+    'fix',
+    'fixes',
+    'fixed',
+    'resolve',
+    'resolves',
+    'resolved',
+];
 
 
 /***/ }),

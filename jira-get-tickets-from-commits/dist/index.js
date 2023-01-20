@@ -1,6 +1,29 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 9882:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getJiraTickets = void 0;
+const commit_parsing_1 = __nccwpck_require__(6928);
+function getJiraTickets(commits, onlyFinalCommits = false) {
+    const parsedCommits = (0, commit_parsing_1.parseCommits)(commits);
+    const tickets = [];
+    for (const commit of parsedCommits) {
+        if (commit.jiraTicket != null && (!onlyFinalCommits || commit.isCommitResolved === true)) {
+            tickets.push(commit.jiraTicket);
+        }
+    }
+    return tickets;
+}
+exports.getJiraTickets = getJiraTickets;
+
+
+/***/ }),
+
 /***/ 1667:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -42,6 +65,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const nodegit_1 = __nccwpck_require__(2596);
 const commit_gathering_1 = __nccwpck_require__(8726);
+const detector_1 = __nccwpck_require__(9882);
 // These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
 __nccwpck_require__(5063);
 __nccwpck_require__(9825);
@@ -51,16 +75,10 @@ function main() {
         try {
             const toCommit = core.getInput('to', { required: true });
             const fromCommit = core.getInput('from', { required: true });
+            const onlyResolvedTickets = core.getBooleanInput('onlyResolvedTickets');
             const repo = yield nodegit_1.Repository.open('.');
             const commits = yield (0, commit_gathering_1.gatherCommits)(repo, fromCommit, toCommit);
-            const tickets = [];
-            for (const commit of commits) {
-                searchForTickets(commit.message(), tickets);
-                const body = commit.body();
-                if (body != null) {
-                    searchForTickets(body, tickets);
-                }
-            }
+            const tickets = (0, detector_1.getJiraTickets)(commits, onlyResolvedTickets);
             core.setOutput('tickets', tickets.join(','));
         }
         catch (error) {
@@ -69,20 +87,7 @@ function main() {
         }
     });
 }
-function searchForTickets(text, target) {
-    while (true) {
-        const match = JIRA_REGEX.exec(text);
-        if (match == null) {
-            break;
-        }
-        const ticketName = match[0];
-        if (!target.includes(ticketName)) {
-            target.push(ticketName);
-        }
-    }
-}
 void main();
-const JIRA_REGEX = /[A-Z]{2,4}-[0-9]+/g;
 
 
 /***/ }),
@@ -54619,6 +54624,69 @@ function gatherCommits(repository, fromSha, toSha) {
     });
 }
 exports.gatherCommits = gatherCommits;
+
+
+/***/ }),
+
+/***/ 6928:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseCommits = exports.ParsedCommit = void 0;
+class ParsedCommit {
+    constructor(commit, clearedMessage, scope, type, jiraTicket, breaking, isCommitResolved) {
+        this.commit = commit;
+        this.clearedMessage = clearedMessage;
+        this.scope = scope;
+        this.type = type;
+        this.jiraTicket = jiraTicket;
+        this.breaking = breaking;
+        this.isCommitResolved = isCommitResolved;
+    }
+}
+exports.ParsedCommit = ParsedCommit;
+function parseCommits(commits) {
+    const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
+    return commits.map(rawCommit => {
+        var _a, _b, _c;
+        const match = commitRegex.exec(rawCommit.message());
+        if (match != null) {
+            const breaking = ((_b = (_a = rawCommit.body()) === null || _a === void 0 ? void 0 : _a.includes('BREAKING')) !== null && _b !== void 0 ? _b : false) || (match[6] != null && match[6].trim().length > 0);
+            let jiraTicket = match[2];
+            let commitResolved = false;
+            if (jiraTicket == null) {
+                const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g;
+                const body = (_c = rawCommit.body()) !== null && _c !== void 0 ? _c : '';
+                const jiraMatchInBody = jiraRegex.exec(body);
+                if (jiraMatchInBody != null) {
+                    jiraTicket = jiraMatchInBody[3];
+                    const keyword = jiraMatchInBody[2];
+                    if (resolveKeywords.includes(keyword)) {
+                        commitResolved = true;
+                    }
+                }
+            }
+            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], jiraTicket, breaking, commitResolved);
+        }
+        else {
+            return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined);
+        }
+    });
+}
+exports.parseCommits = parseCommits;
+const resolveKeywords = [
+    'close',
+    'closes',
+    'closed',
+    'fix',
+    'fixes',
+    'fixed',
+    'resolve',
+    'resolves',
+    'resolved',
+];
 
 
 /***/ }),
