@@ -7,6 +7,9 @@ inputs:
   from:
     description: 'Commit to start searching tickets from (exclusive)'
     required: true
+  onlyResolvedTickets:
+    description: 'Only include tickets where ticket mention in commit is preceded by the resolution keyword (for example "fixes ABC-123" instead of just "ABC-123")'
+    default: 'false'
 outputs:
   tickets:
     description: 'Comma-separated list of found tickets'

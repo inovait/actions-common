@@ -107,6 +107,7 @@ Inputs:
 
 * `from` (Required) - Commit to start generating changelog from (exclusive)
 * `to` (Optional) - Last commit (inclusive) to generate changelog from
+* `onlyResolvedTickets` (Optional) - When set to `true`, only include tickets where ticket mention in commit is preceded by a [resolution keyword](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) (for example `fixes ABC-123` instead of just `ABC-123`)
 
 Outputs:
 
