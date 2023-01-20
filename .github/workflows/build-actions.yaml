@@ -15,7 +15,7 @@ on:
   workflow_dispatch:
 jobs:
   build-actions:
-    runs-on: "node"
+    runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v3
       # Github Actions run with Node 16 for now, so we must build with Node 16
@@ -23,15 +23,15 @@ jobs:
         with:
           node-version: 16
       - run: "sudo apt-get install -y libkrb5-dev curl libcurl4 libssl-dev"
-      - uses: inovait/action-localcache@main
+      - uses: actions/cache@v3
         name: "Cache npm packages"
         with:
-          folder: ~/.npm
+          path: ~/.npm
           key: ${{ runner.os }}-npm-packages
-      - uses: inovait/action-localcache@main
+      - uses: actions/cache@v3
         name: "Cache nodegit"
         with:
-          folder: libs/node_modules/nodegit
+          path: libs/node_modules/nodegit
           key: ${{ runner.os }}-nodegit
         # Libs module has all versions fixed, so we can run npm install instead of npm ci, which uses
         # cached version of the node git
