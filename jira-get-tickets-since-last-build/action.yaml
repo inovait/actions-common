@@ -14,7 +14,7 @@ runs:
     - name: Derive appropriate SHAs for base and head for `nx affected` commands
       uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf
     - name: Get jira tickets
-      uses: inovait/actions-common/jira-get-tickets-from-commits@85dfe3d775b78c15a05765a092e6b1e2c421fd2c
+      uses: inovait/actions-common/jira-get-tickets-from-commits@b138d2f3e6f00a8104124da69b6ca8ff70a6d3c0
       id: internal_jira
       with:
         from: '${{ env.NX_BASE }}'
