@@ -26,8 +26,14 @@ test('detect all jira tickets from commits', () => {
         'feat: make LiveData observing utils inline',
         '2018-11-07T07:48:01+01:00',
         'This fixes ABC-72'
+      ),
+      createFakeCommit(
+        '340762ccc0ac26ab71c0579ac1f2a61211c0140c',
+        'feat: feature 73',
+        '2018-11-07T07:48:01+01:00',
+        'fix ABC-73'
       )
     ]
 
-  expect(getJiraTickets(commits)).toEqual(['ABC-70', 'ABC-71', 'ABC-72'])
+  expect(getJiraTickets(commits)).toEqual(['ABC-70', 'ABC-71', 'ABC-72', 'ABC-73'])
 })

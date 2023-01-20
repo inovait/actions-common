@@ -31,6 +31,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
       let jiraTicket = match[2]
       if (jiraTicket == null) {
         const body = rawCommit.body() ?? ''
+        JIRA_REGEX.lastIndex = 0
         const jiraMatchInBody = JIRA_REGEX.exec(body)
         if (jiraMatchInBody != null) {
           jiraTicket = jiraMatchInBody[0]
