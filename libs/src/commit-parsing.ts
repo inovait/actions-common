@@ -1,7 +1,16 @@
 import { Commit } from 'nodegit'
 
 export class ParsedCommit {
-  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
+  constructor(
+    commit: Commit,
+    clearedMessage: string,
+    scope?: string,
+    type?: string,
+    jiraTicket?: string,
+    breaking?: boolean,
+    isCommitResolved: boolean = false,
+    isCommitHiding: boolean = false,
+  ) {
     this.commit = commit
     this.clearedMessage = clearedMessage
     this.scope = scope
@@ -9,6 +18,7 @@ export class ParsedCommit {
     this.jiraTicket = jiraTicket
     this.breaking = breaking
     this.isCommitResolved = isCommitResolved
+    this.isCommitHiding = isCommitHiding
   }
 
   type?: string
@@ -17,7 +27,8 @@ export class ParsedCommit {
   clearedMessage: string
   commit: Commit
   breaking?: boolean
-  isCommitResolved?: boolean
+  isCommitResolved: boolean
+  isCommitHiding: boolean
 }
 
 export function parseCommits(commits: Commit[]): ParsedCommit[] {
@@ -32,6 +43,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
 
       let jiraTicket = match[2]
       let commitResolved: boolean = false
+      let commitHidden: boolean = false
       if (jiraTicket == null) {
         const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g
         const body = rawCommit.body() ?? ''
@@ -43,6 +55,9 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
           if (resolveKeywords.includes(keyword)) {
             commitResolved = true
           }
+          if (hideKeywords.includes(keyword)) {
+            commitHidden = true
+          }
         }
       }
 
@@ -53,7 +68,8 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         match[3],
         jiraTicket,
         breaking,
-        commitResolved
+        commitResolved,
+        commitHidden
       )
     } else {
       return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined)
@@ -71,6 +87,12 @@ const resolveKeywords = [
   'resolve',
   'resolves',
   'resolved',
+]
+
+const hideKeywords = [
+  'hide',
+  'hides',
+  'hidden'
 ]
 
 
