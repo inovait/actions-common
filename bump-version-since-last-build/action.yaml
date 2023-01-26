@@ -16,8 +16,14 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: 16
+    - name: Get current branch
+      shell: bash
+      run: |
+        echo "CURRENT_BRANCH=$(git branch --show)" >> $GITHUB_ENV
     - name: Derive appropriate SHAs for base and head for `nx affected` commands
       uses: nrwl/nx-set-shas@177b48373c6dc583ce0d9257ffb484bdd232fedf
+      with:
+        main-branch-name: "${{ env.CURRENT_BRANCH }}"
     - name: Get version
       uses: inovait/actions-common/bump-version@a65ef37ed86df6ee4d6ff81cd6b8026f189d473d
       id: internal_version
