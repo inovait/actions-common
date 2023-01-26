@@ -60,7 +60,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@11c3bbccb3ca9b203f5a1dc125ef5e3547d1c077
+    uses: inovait/actions-common/changelog-since-last-build@e557bca11229a486bf990f2a2c1bdeac4b512bd4
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -129,7 +129,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@fc52f3b65dc2ad944f5eada357b583b093bd7ff4
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@e557bca11229a486bf990f2a2c1bdeac4b512bd4
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
@@ -272,7 +272,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  uses: inovait/actions-common/bump-version-since-last-build@e557bca11229a486bf990f2a2c1bdeac4b512bd4
   with:
     versionFile: 'version.txt'
 ```
