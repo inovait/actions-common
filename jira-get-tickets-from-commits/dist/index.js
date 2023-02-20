@@ -54591,9 +54591,9 @@ __nccwpck_require__(7774);
 function gatherCommits(repository, fromSha, toSha) {
     return __awaiter(this, void 0, void 0, function* () {
         const walker = nodegit_1.Revwalk.create(repository);
-        walker.pushHead();
+        walker.push((yield repository.getCommit(toSha)).id());
+        walker.hide((yield repository.getCommit(fromSha)).id());
         const gatheredCommits = [];
-        let started = false;
         while (true) {
             try {
                 const next = yield walker.next();
@@ -54601,15 +54601,7 @@ function gatherCommits(repository, fromSha, toSha) {
                     break;
                 }
                 const commit = yield repository.getCommit(next);
-                if (commit.sha() === fromSha) {
-                    break;
-                }
-                if (commit.sha() === toSha) {
-                    started = true;
-                }
-                if (started) {
-                    gatheredCommits.push(commit);
-                }
+                gatheredCommits.push(commit);
             }
             catch (e) {
                 if (e.errno === -31 /* Error.CODE.ITEROVER */) {
