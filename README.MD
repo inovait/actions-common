@@ -11,7 +11,7 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@4dc77cecea31741a4f027f8e0bb00475d0add381
+- uses: inovait/actions-common/android-setup@b3637edc6ac19ca4ee4b5f558cbe265ccd6eb6ac
 ```
 
 ### Run with emulator
@@ -41,7 +41,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@46744a98ddf47d8ec6c99e0b285a040c8ef16723
+    uses: inovait/actions-common/git-changelog-generator@29c00126ea17bcf4d086bd7006dd26e111a46136
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -60,7 +60,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@e557bca11229a486bf990f2a2c1bdeac4b512bd4
+    uses: inovait/actions-common/changelog-since-last-build@29c00126ea17bcf4d086bd7006dd26e111a46136
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -115,7 +115,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@fc52f3b65dc2ad944f5eada357b583b093bd7ff4
+  uses: inovait/actions-common/jira-get-tickets-from-commits@29c00126ea17bcf4d086bd7006dd26e111a46136
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -129,7 +129,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@e557bca11229a486bf990f2a2c1bdeac4b512bd4
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@29c00126ea17bcf4d086bd7006dd26e111a46136
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```

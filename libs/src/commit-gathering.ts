@@ -7,10 +7,10 @@ require('nodegit/dist/oid.js')
 
 export async function gatherCommits(repository: Repository, fromSha: string, toSha: string): Promise<Commit[]> {
   const walker = Revwalk.create(repository)
-  walker.pushHead()
+  walker.push((await repository.getCommit(toSha)).id())
+  walker.hide((await repository.getCommit(fromSha)).id())
 
   const gatheredCommits: Commit[] = []
-  let started: boolean = false
 
   while (true) {
     try {
@@ -21,17 +21,7 @@ export async function gatherCommits(repository: Repository, fromSha: string, toS
 
       const commit = await repository.getCommit(next)
 
-      if (commit.sha() === fromSha) {
-        break
-      }
-
-      if (commit.sha() === toSha) {
-        started = true
-      }
-
-      if (started) {
-        gatheredCommits.push(commit)
-      }
+      gatheredCommits.push(commit)
     } catch (e: any) {
       if (e.errno === Error.CODE.ITEROVER) {
         break
