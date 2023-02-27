@@ -57845,9 +57845,9 @@ exports.gatherCommits = gatherCommits;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseCommits = exports.ParsedCommit = void 0;
 class ParsedCommit {
-    constructor(commit, clearedMessage, scope, type, jiraTicket, breaking, isCommitResolved) {
+    constructor(commit, clearedSummary, scope, type, jiraTicket, breaking, isCommitResolved) {
         this.commit = commit;
-        this.clearedMessage = clearedMessage;
+        this.clearedSummary = clearedSummary;
         this.scope = scope;
         this.type = type;
         this.jiraTicket = jiraTicket;
@@ -57858,9 +57858,9 @@ class ParsedCommit {
 exports.ParsedCommit = ParsedCommit;
 function parseCommits(commits) {
     const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
-    return commits.map(rawCommit => {
+    return commits.filter(rawCommit => rawCommit.parentcount() == 1).map(rawCommit => {
         var _a, _b, _c;
-        const match = commitRegex.exec(rawCommit.message());
+        const match = commitRegex.exec(rawCommit.summary());
         if (match != null) {
             const breaking = ((_b = (_a = rawCommit.body()) === null || _a === void 0 ? void 0 : _a.includes('BREAKING')) !== null && _b !== void 0 ? _b : false) || (match[6] != null && match[6].trim().length > 0);
             let jiraTicket = match[2];
@@ -57880,7 +57880,7 @@ function parseCommits(commits) {
             return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], jiraTicket, breaking, commitResolved);
         }
         else {
-            return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined);
+            return new ParsedCommit(rawCommit, rawCommit.summary(), undefined, undefined, undefined);
         }
     });
 }
