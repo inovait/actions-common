@@ -1,9 +1,9 @@
 import { Commit } from 'nodegit'
 
 export class ParsedCommit {
-  constructor(commit: Commit, clearedMessage: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
+  constructor(commit: Commit, clearedSummary: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
     this.commit = commit
-    this.clearedMessage = clearedMessage
+    this.clearedSummary = clearedSummary
     this.scope = scope
     this.type = type
     this.jiraTicket = jiraTicket
@@ -14,7 +14,7 @@ export class ParsedCommit {
   type?: string
   scope?: string
   jiraTicket?: string
-  clearedMessage: string
+  clearedSummary: string
   commit: Commit
   breaking?: boolean
   isCommitResolved?: boolean
@@ -24,7 +24,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
   const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
   return commits.map(rawCommit => {
-    const match = commitRegex.exec(rawCommit.message())
+    const match = commitRegex.exec(rawCommit.summary())
     if (match != null) {
       const breaking = (rawCommit.body()?.includes('BREAKING') ?? false) || (
         match[6] != null && match[6].trim().length > 0
@@ -56,7 +56,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         commitResolved
       )
     } else {
-      return new ParsedCommit(rawCommit, rawCommit.message(), undefined, undefined, undefined)
+      return new ParsedCommit(rawCommit, rawCommit.summary(), undefined, undefined, undefined)
     }
   })
 }

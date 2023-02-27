@@ -2,7 +2,7 @@ import { Commit } from 'nodegit'
 
 export function createFakeCommit(
   sha: string,
-  message: string,
+  summary: string,
   isoDate: string,
   description: string = ''
 ): Commit {
@@ -12,8 +12,8 @@ export function createFakeCommit(
     sha(): string {
       return sha
     },
-    message(): string {
-      return message
+    summary(): string {
+      return summary
     },
     body(): string {
       return description
