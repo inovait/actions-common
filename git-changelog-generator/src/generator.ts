@@ -86,7 +86,7 @@ export function generateCommitList(
       listText += `**${commit.scope}**: `
     }
 
-    listText += commit.clearedMessage
+    listText += commit.clearedSummary
     const sha = commit.commit.sha()
     listText += ` ([${sha.substring(0, 8)}](${options.gitCommitUrlPrefix}${sha}))\n`
   }

@@ -30,7 +30,7 @@ runs:
         main-branch-name: "${{ env.CURRENT_BRANCH }}"
     - name: Generate Changelog
       id: internal_changelog
-      uses: inovait/actions-common/git-changelog-generator@f2b952d7c7b689e9ea883804d06f65f2497335d1
+      uses: inovait/actions-common/git-changelog-generator@ae8475cbcbab932074523940d10127bdf652cfb8
       with:
         from: '${{ env.NX_BASE }}'
         to: '${{ env.NX_HEAD }}'

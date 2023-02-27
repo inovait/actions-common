@@ -2,9 +2,10 @@ import { Commit } from 'nodegit'
 
 export function createFakeCommit(
   sha: string,
-  message: string,
+  summary: string,
   isoDate: string,
-  description: string = ''
+  description: string = '',
+  parentCount: number = 1
 ): Commit {
   // Only implement required methods
   // @ts-expect-error
@@ -12,15 +13,17 @@ export function createFakeCommit(
     sha(): string {
       return sha
     },
-    message(): string {
-      return message
+    summary(): string {
+      return summary
     },
     body(): string {
       return description
     },
     date(): Date {
       return new Date(Date.parse(isoDate))
+    },
+    parentcount(): number {
+      return parentCount
     }
-
   }
 }
