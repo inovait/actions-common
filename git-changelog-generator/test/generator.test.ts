@@ -111,6 +111,14 @@ test('generate changelog for a minor release', () => {
         'fix(android): PreferenceProperty null default crash',
         '2018-09-26T13:37:48+02:00',
       ),
+      createFakeCommit(
+        '8948d219687ea43ae265024ce0daaa1993c4da6d',
+        'Merge branch \'develop\' into IW-3265-fix-notification_activity_history',
+        '2018-09-26T13:37:48+02:00',
+        '    # Conflicts:\n' +
+        '    #       app/src/main/res/layout/activity_achievement_details.xml\n',
+        2
+      ),
     ]
 
   const expected = fs.readFileSync('test/test-files/example-minor-release-changelog.txt').toString().trim()
