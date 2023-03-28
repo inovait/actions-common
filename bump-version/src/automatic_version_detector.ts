@@ -12,5 +12,11 @@ export function getVersionToBump(commits: Commit[]): string {
     return 'minor'
   }
 
-  return 'patch'
+  if (parsedCommits.find((commit) => commit.type === 'fix' ||
+    parsedCommits.every((commit) => commit.type == null)) != null
+  ) {
+    return 'patch'
+  }
+
+  return 'none'
 }

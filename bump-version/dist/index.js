@@ -17,7 +17,11 @@ function getVersionToBump(commits) {
     if (parsedCommits.find((commit) => commit.type === 'feat') != null) {
         return 'minor';
     }
-    return 'patch';
+    if (parsedCommits.find((commit) => commit.type === 'fix' ||
+        parsedCommits.every((commit) => commit.type == null)) != null) {
+        return 'patch';
+    }
+    return 'none';
 }
 exports.getVersionToBump = getVersionToBump;
 
@@ -123,11 +127,20 @@ function main() {
             else if (increment === 'patch') {
                 releaseType = 'patch';
             }
+            else if (increment === 'none') {
+                releaseType = 'none';
+            }
             else {
                 core.setFailed(`Unknown release type ${increment}`);
                 return;
             }
-            const newVersion = parsedVersion.inc(releaseType).format();
+            let newVersion;
+            if (releaseType === 'none') {
+                newVersion = parsedVersion.format();
+            }
+            else {
+                newVersion = parsedVersion.inc(releaseType).format();
+            }
             core.info(`New version: ${newVersion}`);
             core.setOutput('version', newVersion);
             if (versionFile.length > 0) {
