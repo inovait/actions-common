@@ -25,7 +25,7 @@ runs:
       with:
         main-branch-name: "${{ env.CURRENT_BRANCH }}"
     - name: Get version
-      uses: inovait/actions-common/bump-version@a8b37741a94c579c070d3e5f4159e41d97f89d6b
+      uses: inovait/actions-common/bump-version@78dc12465ce7ffb8391180d6dfc40fe9db5cc910
       id: internal_version
       with:
         version: '${{ inputs.version }}'
