@@ -237,7 +237,7 @@ Example usage:
 
 ```yaml
 - name: Bump minor version
-  uses: inovait/actions-common/bump-version@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  uses: inovait/actions-common/bump-version@e827712600e053f1f85f3aa0a1cb0ad54a60ef36
   with:
     versionFile: 'version.txt'
     increment: minor
@@ -246,7 +246,7 @@ Example usage:
 ```yaml
 - name: Bump major version from file
   id: version-step
-  uses: inovait/actions-common/bump-version@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  uses: inovait/actions-common/bump-version@e827712600e053f1f85f3aa0a1cb0ad54a60ef36
   with:
     version: '1.0.0'
     increment: major
@@ -256,7 +256,7 @@ Example usage:
 ```yaml
 - name: Bump version from commits
   id: version-step
-  uses: inovait/actions-common/bump-version@abf8eb278d434f0a8cab7fa05b4850c8550cdb29
+  uses: inovait/actions-common/bump-version@e827712600e053f1f85f3aa0a1cb0ad54a60ef36
   with:
     versionFile: 'version.txt'
     increment: auto
@@ -272,7 +272,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@e557bca11229a486bf990f2a2c1bdeac4b512bd4
+  uses: inovait/actions-common/bump-version-since-last-build@e827712600e053f1f85f3aa0a1cb0ad54a60ef36
   with:
     versionFile: 'version.txt'
 ```
