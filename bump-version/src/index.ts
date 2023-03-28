@@ -51,19 +51,27 @@ async function main(): Promise<void> {
       core.info(`Detected ${increment} release type from commits`)
     }
 
-    let releaseType: ReleaseType
+    let releaseType: ReleaseType | 'none'
     if (increment === 'major') {
       releaseType = 'major'
     } else if (increment === 'minor') {
       releaseType = 'minor'
     } else if (increment === 'patch') {
       releaseType = 'patch'
+    } else if (increment === 'none') {
+      releaseType = 'none'
     } else {
       core.setFailed(`Unknown release type ${increment}`)
       return
     }
 
-    const newVersion = parsedVersion.inc(releaseType).format()
+    let newVersion: string
+    if (releaseType === 'none') {
+      newVersion = parsedVersion.format()
+    } else {
+      newVersion = parsedVersion.inc(releaseType).format()
+    }
+
     core.info(`New version: ${newVersion}`)
 
     core.setOutput('version', newVersion)

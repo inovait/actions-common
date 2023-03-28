@@ -225,7 +225,7 @@ New version can be accessed using `output` action output.
 * `versionFile` - old version is read from the specified text file, and new version is written back to the file
 
 You also need to specify `increment` which tells the action which part of the version should be bumped. 
-Can be `major`, `minor`, `patch` or `auto`.
+Can be `major`, `minor`, `patch`, `none` or `auto`.
 
 In `auto` mode, release type will be automatically selected based on commit messages from provided range. Commits need to follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) spec for this to work. You also need to specify these in auto mode:
 
