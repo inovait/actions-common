@@ -14,7 +14,7 @@ then you can add the changelog action:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+    uses: inovait/actions-common/git-changelog-generator@1cf434ec3089ad171163da8ff16690ad09eeacf4
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -36,7 +36,7 @@ You can also use `changelog` action step output in your workflow scripts. For ex
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+    uses: inovait/actions-common/git-changelog-generator@1cf434ec3089ad171163da8ff16690ad09eeacf4
     id: my_changelog
     with:
       ...

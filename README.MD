@@ -41,7 +41,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+    uses: inovait/actions-common/git-changelog-generator@1cf434ec3089ad171163da8ff16690ad09eeacf4
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -60,7 +60,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+    uses: inovait/actions-common/changelog-since-last-build@1cf434ec3089ad171163da8ff16690ad09eeacf4
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -115,7 +115,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+  uses: inovait/actions-common/jira-get-tickets-from-commits@1cf434ec3089ad171163da8ff16690ad09eeacf4
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -129,7 +129,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@1cf434ec3089ad171163da8ff16690ad09eeacf4
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
@@ -237,7 +237,7 @@ Example usage:
 
 ```yaml
 - name: Bump minor version
-  uses: inovait/actions-common/bump-version@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+  uses: inovait/actions-common/bump-version@1cf434ec3089ad171163da8ff16690ad09eeacf4
   with:
     versionFile: 'version.txt'
     increment: minor
@@ -246,7 +246,7 @@ Example usage:
 ```yaml
 - name: Bump major version from file
   id: version-step
-  uses: inovait/actions-common/bump-version@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+  uses: inovait/actions-common/bump-version@1cf434ec3089ad171163da8ff16690ad09eeacf4
   with:
     version: '1.0.0'
     increment: major
@@ -256,7 +256,7 @@ Example usage:
 ```yaml
 - name: Bump version from commits
   id: version-step
-  uses: inovait/actions-common/bump-version@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+  uses: inovait/actions-common/bump-version@1cf434ec3089ad171163da8ff16690ad09eeacf4
   with:
     versionFile: 'version.txt'
     increment: auto
@@ -272,7 +272,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@21a4069c8686686b5d0a1429f4d1f7ebf0d59f1a
+  uses: inovait/actions-common/bump-version-since-last-build@1cf434ec3089ad171163da8ff16690ad09eeacf4
   with:
     versionFile: 'version.txt'
 ```
