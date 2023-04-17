@@ -32,6 +32,17 @@ test('detect all jira tickets from commits', () => {
         'feat: feature 73',
         '2018-11-07T07:48:01+01:00',
         'fix ABC-73'
+      ),
+      createFakeCommit(
+        'fa5e0250f59bf5c8acdab7ae5e8070459a351a1d',
+        '[ABC-B70] test(retrofit): add JUnit dependency',
+        '2018-11-20T07:57:01+01:00'
+      ),
+      createFakeCommit(
+        '340762ccc0ac26ab71c0579ac1f2a61211c2140c',
+        'feat: feature 74',
+        '2018-11-07T07:48:01+01:00',
+        'fix ABC-D73'
       )
     ]
 
