@@ -54682,7 +54682,7 @@ class ParsedCommit {
 }
 exports.ParsedCommit = ParsedCommit;
 function parseCommits(commits) {
-    const commitRegex = /^(\[(.+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
+    const commitRegex = /^(\[([A-Z]{2,4}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
     return commits.filter(rawCommit => rawCommit.parentcount() == 1).map(rawCommit => {
         var _a, _b, _c;
         const match = commitRegex.exec(rawCommit.summary());
