@@ -1,4 +1,4 @@
-import { Commit } from 'nodegit'
+import { CommitObject } from 'isomorphic-git'
 
 export function createFakeCommit(
   sha: string,
@@ -6,24 +6,22 @@ export function createFakeCommit(
   isoDate: string,
   description: string = '',
   parentCount: number = 1
-): Commit {
+): CommitObject {
+  let message: string
+  if (description.length === 0) {
+    message = summary
+  } else {
+    message = `${summary}\n\n${description}`
+  }
+
   // Only implement required methods
-  // @ts-expect-error
   return {
-    sha(): string {
-      return sha
+    tree: sha,
+    message,
+    // @ts-expect-error
+    committer: {
+      timestamp: new Date(Date.parse(isoDate)).getTime() / 1000
     },
-    summary(): string {
-      return summary
-    },
-    body(): string {
-      return description
-    },
-    date(): Date {
-      return new Date(Date.parse(isoDate))
-    },
-    parentcount(): number {
-      return parentCount
-    }
+    parent: new Array(parentCount)
   }
 }

@@ -1,15 +1,9 @@
 // noinspection ExceptionCaughtLocallyJS
 
 import * as core from '@actions/core'
-import { Repository } from 'nodegit'
 import { generateChangelog } from './generator'
 import * as fs from 'fs/promises'
 import { gatherCommits } from 'action_common_libs/src/commit-gathering'
-
-// These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-require('nodegit/dist/repository.js')
-require('nodegit/dist/commit.js')
-require('nodegit/dist/oid.js')
 
 async function main(): Promise<void> {
   try {
@@ -19,8 +13,7 @@ async function main(): Promise<void> {
     const targetFile: string = core.getInput('target_file')
     const jiraUrl: string = core.getInput('jira_url')
 
-    const repo = await Repository.open('.')
-    const commits = await gatherCommits(repo, fromCommit, toCommit)
+    const commits = await gatherCommits('.', fromCommit, toCommit)
 
     const changelog = generateChangelog(commits, {
       gitCommitUrlPrefix,

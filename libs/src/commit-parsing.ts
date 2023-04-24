@@ -1,7 +1,7 @@
-import { Commit } from 'nodegit'
+import { CommitObject } from 'isomorphic-git'
 
 export class ParsedCommit {
-  constructor(commit: Commit, clearedSummary: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
+  constructor(commit: CommitObject, clearedSummary: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
     this.commit = commit
     this.clearedSummary = clearedSummary
     this.scope = scope
@@ -15,18 +15,30 @@ export class ParsedCommit {
   scope?: string
   jiraTicket?: string
   clearedSummary: string
-  commit: Commit
+  commit: CommitObject
   breaking?: boolean
   isCommitResolved?: boolean
 }
 
-export function parseCommits(commits: Commit[]): ParsedCommit[] {
+export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
   const commitRegex = /^(\[([A-Z]{2,4}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
-  return commits.filter(rawCommit => rawCommit.parentcount() == 1).map(rawCommit => {
-    const match = commitRegex.exec(rawCommit.summary())
+  return commits.filter(rawCommit => rawCommit.parent.length === 1).map(rawCommit => {
+    let summary: string = ''
+    let body: string | undefined
+
+    if (rawCommit.message.includes('\n')) {
+      const newLinePosition = rawCommit.message.indexOf('\n')
+      summary = rawCommit.message.substring(0, newLinePosition)
+      body = rawCommit.message.substring(newLinePosition + 1)
+    } else {
+      summary = rawCommit.message
+      body = undefined
+    }
+
+    const match = commitRegex.exec(summary)
     if (match != null) {
-      const breaking = (rawCommit.body()?.includes('BREAKING') ?? false) || (
+      const breaking = (body?.includes('BREAKING') ?? false) || (
         match[6] != null && match[6].trim().length > 0
       )
 
@@ -34,8 +46,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
       let commitResolved: boolean = false
       if (jiraTicket == null) {
         const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g
-        const body = rawCommit.body() ?? ''
-        const jiraMatchInBody = jiraRegex.exec(body)
+        const jiraMatchInBody = jiraRegex.exec(body ?? '')
         if (jiraMatchInBody != null) {
           jiraTicket = jiraMatchInBody[3]
           const keyword = jiraMatchInBody[2]
@@ -56,7 +67,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
         commitResolved
       )
     } else {
-      return new ParsedCommit(rawCommit, rawCommit.summary(), undefined, undefined, undefined)
+      return new ParsedCommit(rawCommit, summary, undefined, undefined, undefined)
     }
   })
 }
@@ -70,7 +81,5 @@ const resolveKeywords = [
   'fixed',
   'resolve',
   'resolves',
-  'resolved',
+  'resolved'
 ]
-
-

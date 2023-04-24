@@ -1,13 +1,15 @@
-import { Commit } from 'nodegit'
 import { parseCommits, ParsedCommit } from 'action_common_libs/src/commit-parsing'
+import { CommitObject } from 'isomorphic-git'
 
 export interface GenerationOptions {
   gitCommitUrlPrefix: string
   jiraUrl?: string
 }
 
-export function generateChangelog(commits: Commit[], options: GenerationOptions): string {
-  const sortedCommits = commits.sort((a, b) => { return a.date().getTime() > b.date().getDate() ? -1 : 1 })
+export function generateChangelog(commits: CommitObject[], options: GenerationOptions): string {
+  const sortedCommits = commits.sort((a, b) =>
+    a.committer.timestamp < b.committer.timestamp ? -1 : 1
+  )
   const parsedCommits = parseCommits(sortedCommits)
 
   let changelog = ''
@@ -87,7 +89,7 @@ export function generateCommitList(
     }
 
     listText += commit.clearedSummary
-    const sha = commit.commit.sha()
+    const sha = commit.commit.tree
     listText += ` ([${sha.substring(0, 8)}](${options.gitCommitUrlPrefix}${sha}))\n`
   }
 

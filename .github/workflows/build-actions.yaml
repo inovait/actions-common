@@ -28,23 +28,9 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-packages
-      - uses: actions/cache@v3
-        name: "Cache nodegit"
-        with:
-          path: libs/node_modules/nodegit
-          key: ${{ runner.os }}-nodegit
-        # Libs module has all versions fixed, so we can run npm install instead of npm ci, which uses
-        # cached version of the node git
-      - run: "npm install"
+      - run: "npm ci"
         working-directory: ./libs
-        # Hack: because nodegit install takes forever, copy it from one lib to another
-      - run: "mkdir git-changelog-generator/node_modules"
-      - run: "cp -r libs/node_modules/nodegit git-changelog-generator/node_modules/"
-      - run: "mkdir jira-get-tickets-from-commits/node_modules"
-      - run: "cp -r libs/node_modules/nodegit jira-get-tickets-from-commits/node_modules/"
-      - run: "mkdir bump-version/node_modules"
-      - run: "cp -r libs/node_modules/nodegit bump-version/node_modules/"
-      - run: "npm install"
+      - run: "npm ci"
         working-directory: ./git-changelog-generator
       - run: "npm run all"
         working-directory: ./git-changelog-generator
@@ -52,7 +38,7 @@ jobs:
         working-directory: ./spotlight-publish
       - run: "npm run all"
         working-directory: ./spotlight-publish
-      - run: "npm install"
+      - run: "npm ci"
         working-directory: ./jira-get-tickets-from-commits
       - run: "npm run all"
         working-directory: ./jira-get-tickets-from-commits
@@ -68,7 +54,7 @@ jobs:
         working-directory: ./jira-update
       - run: "npm run all"
         working-directory: ./jira-update
-      - run: "npm install"
+      - run: "npm ci"
         working-directory: ./bump-version
       - run: "npm run all"
         working-directory: ./bump-version

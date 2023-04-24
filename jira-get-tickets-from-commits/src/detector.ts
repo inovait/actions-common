@@ -1,7 +1,7 @@
-import { Commit } from 'nodegit'
 import { parseCommits } from 'action_common_libs/src/commit-parsing'
+import { CommitObject } from 'isomorphic-git'
 
-export function getJiraTickets(commits: Commit[], onlyFinalCommits: boolean = false): string[] {
+export function getJiraTickets(commits: CommitObject[], onlyFinalCommits: boolean = false): string[] {
   const parsedCommits = parseCommits(commits)
   const tickets: string[] = []
 

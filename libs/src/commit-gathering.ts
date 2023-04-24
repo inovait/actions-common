@@ -1,35 +1,22 @@
-import { Commit, Error, Repository, Revwalk } from 'nodegit'
-
 // These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-require('nodegit/dist/repository.js')
-require('nodegit/dist/commit.js')
-require('nodegit/dist/oid.js')
+import { readCommit, log, CommitObject } from 'isomorphic-git'
+import * as fs from 'fs'
 
-export async function gatherCommits(repository: Repository, fromSha: string, toSha: string): Promise<Commit[]> {
-  const walker = Revwalk.create(repository)
-  walker.push((await repository.getCommit(toSha)).id())
-  walker.hide((await repository.getCommit(fromSha)).id())
+export async function gatherCommits(folder: string, fromSha: string, toSha: string): Promise<CommitObject[]> {
+  const fromCommit = await readCommit({
+    fs,
+    dir: folder,
+    oid: fromSha
+  })
 
-  const gatheredCommits: Commit[] = []
+  const since = new Date(fromCommit.commit.committer.timestamp * 1000)
 
-  while (true) {
-    try {
-      const next = await walker.next()
-      if (next.iszero() !== 0) {
-        break
-      }
+  const results = await log({
+    fs,
+    dir: folder,
+    ref: toSha,
+    since
+  })
 
-      const commit = await repository.getCommit(next)
-
-      gatheredCommits.push(commit)
-    } catch (e: any) {
-      if (e.errno === Error.CODE.ITEROVER) {
-        break
-      } else {
-        throw e
-      }
-    }
-  }
-
-  return gatheredCommits
+  return results.map((result) => result.commit)
 }
