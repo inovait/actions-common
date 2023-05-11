@@ -2,6 +2,16 @@
 
 A set of reusable GitHub actions that can be used to simplify your workflows.
 
+## Note for any git history action action
+
+If you use any action that works on git history (such as changelog, jira tickets etc.), you MUST enable deep checkout in your checkout action, otherwise you will get cryptic git errors:
+
+```yaml
+- uses: actions/checkout@v3
+  with:
+    fetch-depth: 0
+```
+
 ## Android
 
 ### Setup Android build environment
