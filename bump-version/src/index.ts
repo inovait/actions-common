@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import * as fs from 'fs/promises'
 import { gatherCommits } from 'action_common_libs/src/commit-gathering'
-import { Repository } from 'nodegit'
 import { getVersionToBump } from './automatic_version_detector'
 import semver, { ReleaseType } from 'semver/preload'
 
@@ -45,8 +44,7 @@ async function main(): Promise<void> {
         return
       }
 
-      const repo = await Repository.open('.')
-      const commits = await gatherCommits(repo, fromCommit, toCommit)
+      const commits = await gatherCommits('.', fromCommit, toCommit)
       increment = getVersionToBump(commits)
       core.info(`Detected ${increment} release type from commits`)
     }
