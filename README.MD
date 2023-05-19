@@ -22,6 +22,8 @@ Example usage:
 
 ```yaml
 - uses: inovait/actions-common/android-setup@ade6b52ea6029e17847560a632d9d63139376f92
+  with:
+    java-version: 17
 ```
 
 ### Run with emulator
