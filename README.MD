@@ -113,6 +113,17 @@ Extra arguments when `destination` is set to `release`:
 
 ### Get Jira tickets mentioned in commits
 
+Action will find any Jira tickets mentioned in commits from specified range. Commits can be specified:
+
+1. At the beginning of the commit's summary, in square brackets. Such as: `[ABC-123] feat: add a feature`
+2. Anywhere in the commit body:
+
+  ```
+  feat: add a feature
+  
+  this fixes ABC-123
+  ```
+
 Inputs:
 
 * `from` (Required) - Commit to start generating changelog from (exclusive)
