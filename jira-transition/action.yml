@@ -10,6 +10,8 @@ inputs:
   to:
     description: 'Name of the state to transition to'
     required: true
+  resolution:
+    description: '(Optional) Also set resolution of this ticket to desired value'
 runs:
   using: 'node16'
   main: 'dist/index.js'
