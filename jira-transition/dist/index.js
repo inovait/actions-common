@@ -75,7 +75,7 @@ function main() {
                 if (transition !== '') {
                     transitionBlock.fields = {
                         resolution: {
-                            name: transition
+                            id: 10000
                         }
                     };
                 }
