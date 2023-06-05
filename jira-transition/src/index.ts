@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   try {
     const from: string | undefined = core.getInput('from')?.toLowerCase()?.trim()
     const to: string = core.getInput('to', { required: true }).toLowerCase()?.trim()
-    const transition: string = core.getInput('resolution').toLowerCase()?.trim()
+    const resolution: string = core.getInput('resolution').toLowerCase()?.trim()
 
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
@@ -46,14 +46,14 @@ async function main(): Promise<void> {
         id: targetTransition.id
       }
 
-      if (transition !== '') {
+      if (resolution !== '') {
         transitionBlock.fields = {
           resolution: {
             id: 10000
           }
         }
       }
-      console.log('Resolution:', transition)
+      console.log('Resolution:', resolution)
       console.log('Ticket: ', ticket)
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, transitionBlock)
