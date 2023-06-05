@@ -5,7 +5,7 @@ async function main(): Promise<void> {
   try {
     const fixVersion: string = core.getInput('fixVersion', { trimWhitespace: true })
     const priority: string = core.getInput('priority', { trimWhitespace: true })
-    const resolution: string = core.getInput('resolution', {trimWhitespace: true})
+    const resolution: string = core.getInput('resolution', { trimWhitespace: true})
 
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
@@ -14,14 +14,15 @@ async function main(): Promise<void> {
       const updateObject: any = {}
       let performRegularUpdate = false
 
-      if(resolution != null && resolution.length !== 0) {
+      if (resolution != null && resolution.length !== 0) {
         updateObject.resolution = [
           {
             set: {
-               name: resolution
+              name: resolution
             }
           }
         ]
+
         performRegularUpdate = true
       }
 
