@@ -5,7 +5,7 @@ async function main(): Promise<void> {
   try {
     const fixVersion: string = core.getInput('fixVersion', { trimWhitespace: true })
     const priority: string = core.getInput('priority', { trimWhitespace: true })
-    const resolution: string = core.getInput('resolution', { trimWhitespace: true})
+    const resolution: string = core.getInput('resolution', { trimWhitespace: true })
 
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
