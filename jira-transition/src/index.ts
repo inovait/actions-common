@@ -53,7 +53,7 @@ async function main(): Promise<void> {
           }
         }
       }
-
+      console.log('Resolution: ', transition)
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, transitionBlock)
     }
