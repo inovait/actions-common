@@ -46,11 +46,22 @@ function main() {
         try {
             const fixVersion = core.getInput('fixVersion', { trimWhitespace: true });
             const priority = core.getInput('priority', { trimWhitespace: true });
+            const resolution = core.getInput('resolution', { trimWhitespace: true });
             const jira = yield (0, jira_1.getJiraClient)();
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
                 const updateObject = {};
                 let performRegularUpdate = false;
+                if (resolution != null && resolution.length !== 0) {
+                    updateObject.resolution = [
+                        {
+                            set: {
+                                name: resolution
+                            }
+                        }
+                    ];
+                    performRegularUpdate = true;
+                }
                 if (fixVersion != null && fixVersion.length !== 0) {
                     updateObject.fixVersions = [
                         {
