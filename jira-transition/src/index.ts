@@ -49,7 +49,7 @@ async function main(): Promise<void> {
       if (transition !== '') {
         transitionBlock.fields = {
           resolution: {
-            name: transition
+            id: 10000
           }
         }
       }
