@@ -79,7 +79,8 @@ function main() {
                         }
                     };
                 }
-                console.log('Resolution: ', transition);
+                console.log('Resolution:', transition);
+                console.log('Ticket: ', ticket);
                 core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
                 yield jira.transitionIssue(ticket.key, transitionBlock);
             }
