@@ -76,6 +76,8 @@ function main() {
                     else {
                         resolution = 'Done';
                     }
+                    console.log('here');
+                    console.log(resolution);
                 }
                 core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
                 yield jira.transitionIssue(ticket.key, {
