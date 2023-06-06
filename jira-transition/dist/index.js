@@ -80,6 +80,9 @@ function main() {
                         }
                     }
                 });
+                console.log(resolution);
+                console.log(ticket);
+                console.log(ticket.fields.resolution);
             }
         }
         catch (error) {
