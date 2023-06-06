@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   try {
     const from: string | undefined = core.getInput('from')?.toLowerCase()?.trim()
     const to: string = core.getInput('to', { required: true }).toLowerCase()?.trim()
-    const resolution: string = core.getInput('resolution');
+    const resolution: string = core.getInput('resolution')
 
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
