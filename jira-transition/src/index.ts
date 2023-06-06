@@ -48,6 +48,8 @@ async function main(): Promise<void> {
         } else {
           resolution = 'Done'
         }
+        console.log('here')
+        console.log(resolution)
       }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, {
