@@ -69,31 +69,17 @@ function main() {
                     core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`);
                     return;
                 }
-                const transitionBlock = {
+                core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
+                yield jira.transitionIssue(ticket.key, {
                     transition: {
                         id: targetTransition.id
-                    }
-                };
-                if (resolution !== '') {
-                    transitionBlock.fields = {
+                    },
+                    fields: {
                         resolution: {
-                            name: `${resolution}`
+                            name: resolution
                         }
-                    };
-                }
-                core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
-                yield jira.transitionIssue(ticket.key, transitionBlock);
-                // core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
-                // await jira.transitionIssue(ticket.key, {
-                //   transition: {
-                //     id: targetTransition.id
-                //   },
-                //   fields: {
-                //     resolution: {
-                //       name: resolution
-                //     }
-                //   }
-                // })
+                    }
+                });
             }
         }
         catch (error) {
