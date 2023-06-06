@@ -47,7 +47,7 @@ function main() {
         try {
             const from = (_b = (_a = core.getInput('from')) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === null || _b === void 0 ? void 0 : _b.trim();
             const to = (_c = core.getInput('to', { required: true }).toLowerCase()) === null || _c === void 0 ? void 0 : _c.trim();
-            const resolution = core.getInput('resolution');
+            let resolution = core.getInput('resolution');
             const jira = yield (0, jira_1.getJiraClient)();
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
@@ -68,6 +68,14 @@ function main() {
                     const possibleTransitionsText = allPossibleTransitions.transitions.map((t) => t.name).join(', ');
                     core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`);
                     return;
+                }
+                if (resolution == null) {
+                    if (ticket.fields.issuetype.name === 'Bug') {
+                        resolution = 'Fixed';
+                    }
+                    else {
+                        resolution = 'Done';
+                    }
                 }
                 core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
                 yield jira.transitionIssue(ticket.key, {
