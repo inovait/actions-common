@@ -69,9 +69,6 @@ function main() {
                     core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`);
                     return;
                 }
-                console.log(resolution);
-                console.log(ticket);
-                console.log(ticket.fields.resolution);
                 core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
                 yield jira.transitionIssue(ticket.key, {
                     transition: {
