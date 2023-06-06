@@ -47,7 +47,7 @@ function main() {
         try {
             const from = (_b = (_a = core.getInput('from')) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === null || _b === void 0 ? void 0 : _b.trim();
             const to = (_c = core.getInput('to', { required: true }).toLowerCase()) === null || _c === void 0 ? void 0 : _c.trim();
-            const resolution = (_d = core.getInput('resolution').toLowerCase()) === null || _d === void 0 ? void 0 : _d.trim();
+            const transition = (_d = core.getInput('resolution').toLowerCase()) === null || _d === void 0 ? void 0 : _d.trim();
             const jira = yield (0, jira_1.getJiraClient)();
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
@@ -72,15 +72,13 @@ function main() {
                 const transitionBlock = {
                     id: targetTransition.id
                 };
-                if (resolution !== '') {
+                if (transition !== '') {
                     transitionBlock.fields = {
                         resolution: {
-                            name: resolution
+                            id: transition
                         }
                     };
                 }
-                console.log('Resolution:', resolution);
-                console.log('Ticket: ', ticket);
                 core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
                 yield jira.transitionIssue(ticket.key, transitionBlock);
             }
