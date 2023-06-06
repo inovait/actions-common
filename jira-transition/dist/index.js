@@ -70,7 +70,7 @@ function main() {
                     core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`);
                     return;
                 }
-                if (resolution == null) {
+                if (resolution === '') {
                     if (ticket.fields.issuetype.name === 'Bug') {
                         resolution = 'Fixed';
                     }
