@@ -19,15 +19,6 @@ async function main(): Promise<void> {
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
 
-    jira.listResolutions()
-      .then((resolutions: any) => {
-        const resolutionIds = resolutions.map((resolution: any) => resolution.id)
-        console.log('Resolution IDs:', resolutionIds)
-      })
-      .catch((error: any) => {
-        console.error('Error retrieving resolutions:', error)
-      })
-
     for (const ticket of tickets) {
       const status = ticket.fields.status
       if (from != null && from.length > 0 && status.name?.toLowerCase() !== from) {
@@ -58,7 +49,7 @@ async function main(): Promise<void> {
       if (transition !== '') {
         transitionBlock.fields = {
           resolution: {
-            name: transition
+            id: transition
           }
         }
       }
