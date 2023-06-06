@@ -42,33 +42,17 @@ async function main(): Promise<void> {
         return
       }
 
-      const transitionBlock: any = {
+      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
+      await jira.transitionIssue(ticket.key, {
         transition: {
           id: targetTransition.id
-        }
-      }
-
-      if (resolution !== '') {
-        transitionBlock.fields = {
+        },
+        fields: {
           resolution: {
-            name: `${resolution}`
+            name: resolution
           }
         }
-      }
-
-      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
-      await jira.transitionIssue(ticket.key, transitionBlock)
-      // core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
-      // await jira.transitionIssue(ticket.key, {
-      //   transition: {
-      //     id: targetTransition.id
-      //   },
-      //   fields: {
-      //     resolution: {
-      //       name: resolution
-      //     }
-      //   }
-      // })
+      })
     }
   } catch (error: any) {
     console.log(error)
