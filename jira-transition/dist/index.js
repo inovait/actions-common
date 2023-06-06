@@ -42,17 +42,17 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const jira_1 = __nccwpck_require__(6965);
 function main() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const from = (_b = (_a = core.getInput('from')) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === null || _b === void 0 ? void 0 : _b.trim();
             const to = (_c = core.getInput('to', { required: true }).toLowerCase()) === null || _c === void 0 ? void 0 : _c.trim();
-            const resolution = (_d = core.getInput('resolution').toLowerCase()) === null || _d === void 0 ? void 0 : _d.trim();
+            const resolution = core.getInput('resolution');
             const jira = yield (0, jira_1.getJiraClient)();
             const tickets = yield (0, jira_1.queryJiraTickets)(jira);
             for (const ticket of tickets) {
                 const status = ticket.fields.status;
-                if (from != null && from.length > 0 && ((_e = status.name) === null || _e === void 0 ? void 0 : _e.toLowerCase()) !== from) {
+                if (from != null && from.length > 0 && ((_d = status.name) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== from) {
                     core.info(`Ticket ${ticket.key} is not in '${from}', but in '${status.name}'. Skipping...`);
                     continue;
                 }
