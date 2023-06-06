@@ -15,7 +15,6 @@ async function main(): Promise<void> {
     const from: string | undefined = core.getInput('from')?.toLowerCase()?.trim()
     const to: string = core.getInput('to', { required: true }).toLowerCase()?.trim()
     let resolution: string = core.getInput('resolution')
-    console.log('start res: ', resolution)
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
 
@@ -48,8 +47,6 @@ async function main(): Promise<void> {
         } else {
           resolution = 'Done'
         }
-        console.log('here')
-        console.log(resolution)
       }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, {
