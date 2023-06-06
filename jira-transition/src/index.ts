@@ -44,7 +44,7 @@ async function main(): Promise<void> {
 
       const transitionBlock: any = {
         transition: {
-            id: targetTransition.id
+          id: targetTransition.id
         }
       }
 
