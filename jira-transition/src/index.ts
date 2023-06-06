@@ -14,7 +14,7 @@ async function main(): Promise<void> {
   try {
     const from: string | undefined = core.getInput('from')?.toLowerCase()?.trim()
     const to: string = core.getInput('to', { required: true }).toLowerCase()?.trim()
-    const resolution: string = core.getInput('resolution')
+    let resolution: string = core.getInput('resolution')
 
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
@@ -42,6 +42,13 @@ async function main(): Promise<void> {
         return
       }
 
+      if (resolution == null) {
+        if (ticket.fields.issuetype.name === 'Bug') {
+          resolution = 'Fixed'
+        } else {
+          resolution = 'Done'
+        }
+      }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, {
         transition: {
