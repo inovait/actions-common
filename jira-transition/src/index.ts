@@ -42,7 +42,7 @@ async function main(): Promise<void> {
         return
       }
 
-      if (resolution == null) {
+      if (resolution === '') {
         if (ticket.fields.issuetype.name === 'Bug') {
           resolution = 'Fixed'
         } else {
