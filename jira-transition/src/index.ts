@@ -53,6 +53,10 @@ async function main(): Promise<void> {
           }
         }
       })
+
+      console.log(resolution)
+      console.log(ticket)
+      console.log(ticket.fields.resolution)
     }
   } catch (error: any) {
     console.log(error)
