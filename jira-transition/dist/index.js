@@ -77,7 +77,7 @@ function main() {
                 if (resolution !== '') {
                     transitionBlock.fields = {
                         resolution: {
-                            name: resolution
+                            name: `${resolution}`
                         }
                     };
                 }
