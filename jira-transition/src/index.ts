@@ -54,21 +54,20 @@ async function main(): Promise<void> {
 
       if (resolution !== '') {
         const resolutions = JSON.parse(resolution)
-        if (ticket.fields.issuetype.name === 'Bug') {
-          transitionBlock.fields = {
-            resolution: {
-              name: resolutions.Bug
+        let resolutionName = resolutions.Default
+        for (const key in resolutions) {
+          if (Object.hasOwnProperty.call(resolutions, key)) {
+            if (ticket.fields.issuetype.name === key) {
+              resolutionName = resolutions[key]
+              break
             }
-
-          }
-        } else {
-          transitionBlock.fields = {
-            resolution: {
-              name: resolutions.Default
-            }
-
           }
         }
+        transitionBlock.fields = {
+          resolution: {
+            name: resolutionName
+          }
+        };
       }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, transitionBlock)
