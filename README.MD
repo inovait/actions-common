@@ -199,6 +199,7 @@ action will consider all tickets that match this JQL for transition.
   (either `tickets` or `jql` is required)
 * `from` - (Optional) Only transition tickets that are currently in this state
 * `to` - State to transition to
+* `resolution` - (Optional) Sets the resolution of tickets to specified value
 
 Example usage:
 
@@ -209,6 +210,7 @@ Example usage:
     tickets: JT-1,JT-2
     from: 'In Progress'
     to: 'Ready to Test'
+    resolution: '{"Bug": "Fixed", "Default": "Done"}'
 ```
 
 ### Update fields on jira ticket(s)
