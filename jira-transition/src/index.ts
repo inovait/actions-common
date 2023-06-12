@@ -40,13 +40,9 @@ async function main(): Promise<void> {
         core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`)
         return
       }
+      if (resolution !== '') {
+        console.log(JSON.parse(resolution));
 
-      if (resolution === '') {
-        if (ticket.fields.issuetype.name === 'Bug') {
-          resolution = 'Fixed'
-        } else {
-          resolution = 'Done'
-        }
       }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, {
