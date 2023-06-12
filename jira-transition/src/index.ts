@@ -10,11 +10,16 @@ interface Transition {
   name: string
 }
 
+interface TransitionBlock {
+  transition: { id: string }
+  fields?: { resolution: { name: string } }
+}
+
 async function main(): Promise<void> {
   try {
     const from: string | undefined = core.getInput('from')?.toLowerCase()?.trim()
     const to: string = core.getInput('to', { required: true }).toLowerCase()?.trim()
-
+    const resolution: string = core.getInput('resolution')
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
 
@@ -41,12 +46,29 @@ async function main(): Promise<void> {
         return
       }
 
-      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
-      await jira.transitionIssue(ticket.key, {
+      const transitionBlock: TransitionBlock = {
         transition: {
           id: targetTransition.id
         }
-      })
+      }
+
+      if (resolution !== '') {
+        const resolutions = JSON.parse(resolution)
+        let resolutionName = resolutions.Default
+        for (const key in resolutions) {
+          if (ticket.fields.issuetype.name === key) {
+            resolutionName = resolutions[key]
+            break
+          }
+        }
+        transitionBlock.fields = {
+          resolution: {
+            name: resolutionName
+          }
+        }
+      }
+      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
+      await jira.transitionIssue(ticket.key, transitionBlock)
     }
   } catch (error: any) {
     console.log(error)
