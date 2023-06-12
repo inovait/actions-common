@@ -82,7 +82,6 @@ function main() {
                                 name: resolutions.Bug
                             }
                         };
-                        console.log(transitionBlock);
                     }
                     else {
                         transitionBlock.fields = {
@@ -91,7 +90,6 @@ function main() {
                             }
                         };
                     }
-                    console.log(transitionBlock);
                 }
                 core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
                 yield jira.transitionIssue(ticket.key, transitionBlock);
