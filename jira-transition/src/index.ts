@@ -10,6 +10,11 @@ interface Transition {
   name: string
 }
 
+interface TransitionBlock {
+  transition: { id: string }
+  fields?: { resolution: { name: string } }
+}
+
 async function main(): Promise<void> {
   try {
     const from: string | undefined = core.getInput('from')?.toLowerCase()?.trim()
@@ -40,20 +45,35 @@ async function main(): Promise<void> {
         core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`)
         return
       }
-      if (resolution !== '') {
-        console.log(JSON.parse(resolution))
-      }
-      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
-      await jira.transitionIssue(ticket.key, {
+
+      const transitionBlock: TransitionBlock = {
         transition: {
           id: targetTransition.id
-        },
-        fields: {
-          resolution: {
-            name: resolution
+        }
+      }
+
+      if (resolution !== '') {
+        const resolutions = JSON.parse(resolution)
+        if (ticket.fields.issuetype.name === 'Bug') {
+          transitionBlock.fields = {
+            resolution: {
+              name: resolutions.Bug
+            }
+
+          }
+          console.log(transitionBlock)
+        } else {
+          transitionBlock.fields = {
+            resolution: {
+              name: resolutions.Default
+            }
+
           }
         }
-      })
+        console.log(transitionBlock)
+      }
+      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
+      await jira.transitionIssue(ticket.key, transitionBlock)
     }
   } catch (error: any) {
     console.log(error)
