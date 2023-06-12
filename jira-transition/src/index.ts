@@ -61,7 +61,6 @@ async function main(): Promise<void> {
             }
 
           }
-          console.log(transitionBlock)
         } else {
           transitionBlock.fields = {
             resolution: {
@@ -70,7 +69,6 @@ async function main(): Promise<void> {
 
           }
         }
-        console.log(transitionBlock)
       }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, transitionBlock)
