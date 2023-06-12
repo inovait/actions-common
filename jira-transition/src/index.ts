@@ -67,7 +67,7 @@ async function main(): Promise<void> {
           resolution: {
             name: resolutionName
           }
-        };
+        }
       }
       core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
       await jira.transitionIssue(ticket.key, transitionBlock)
