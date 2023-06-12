@@ -205,7 +205,7 @@ Example usage:
 
 ```yaml
 - name: Transition tickets to test
-  uses: inovait/actions-common/jira-transition@9bf1c4cf62ef568dec51efac94b1833d74dfc53f
+  uses: inovait/actions-common/jira-transition@796dc0cbed125592c5bcb4bcffbca0495199be60
   with:
     tickets: JT-1,JT-2
     from: 'In Progress'
