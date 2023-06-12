@@ -56,11 +56,9 @@ async function main(): Promise<void> {
         const resolutions = JSON.parse(resolution)
         let resolutionName = resolutions.Default
         for (const key in resolutions) {
-          if (Object.hasOwnProperty.call(resolutions, key)) {
-            if (ticket.fields.issuetype.name === key) {
-              resolutionName = resolutions[key]
-              break
-            }
+          if (ticket.fields.issuetype.name === key) {
+            resolutionName = resolutions[key]
+            break
           }
         }
         transitionBlock.fields = {
