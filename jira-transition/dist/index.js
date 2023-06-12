@@ -69,20 +69,32 @@ function main() {
                     core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`);
                     return;
                 }
-                if (resolution !== '') {
-                    console.log(JSON.parse(resolution));
-                }
-                core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
-                yield jira.transitionIssue(ticket.key, {
+                const transitionBlock = {
                     transition: {
                         id: targetTransition.id
-                    },
-                    fields: {
-                        resolution: {
-                            name: resolution
-                        }
                     }
-                });
+                };
+                if (resolution !== '') {
+                    const resolutions = JSON.parse(resolution);
+                    if (ticket.fields.issuetype.name === 'Bug') {
+                        transitionBlock.fields = {
+                            resolution: {
+                                name: resolutions.Bug
+                            }
+                        };
+                        console.log(transitionBlock);
+                    }
+                    else {
+                        transitionBlock.fields = {
+                            resolution: {
+                                name: resolutions.Default
+                            }
+                        };
+                    }
+                    console.log(transitionBlock);
+                }
+                core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`);
+                yield jira.transitionIssue(ticket.key, transitionBlock);
             }
         }
         catch (error) {
