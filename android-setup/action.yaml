@@ -1,11 +1,15 @@
 name: "Setup Android Environment"
 description: "Setup java, Android SDK and enable dependency caching."
+inputs:
+  java_version:
+    description: 'Java version to built with'
+    default: "11"
 runs:
   using: "composite"
   steps:
     - uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '${{ inputs.java_version }}'
         distribution: temurin
     - uses: inovait/action-localcache@f7ae6363457880b3915a8dabb8d9c562c30e41fb
       name: "Cache gradle wrapper"
