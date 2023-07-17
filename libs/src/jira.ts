@@ -5,6 +5,7 @@ import * as core from '@actions/core'
 
 interface SearchResponse {
   issues: JiraTicket[]
+  total: number
 }
 
 /**
@@ -17,6 +18,7 @@ export interface JiraTicket {
 
 export interface TicketFields {
   status: TicketStatus
+
   [name: string]: any
 }
 
@@ -78,7 +80,12 @@ export async function queryJiraTickets(jira: JiraApi): Promise<JiraTicket[]> {
     jql = `key in (${ticketKeys.join(',')})`
   }
 
-  const response: SearchResponse = (await jira.searchJira(jql)) as SearchResponse
+  const tickets: JiraTicket[] = []
+  let response: SearchResponse
+  do {
+    response = (await jira.searchJira(jql, { startAt: tickets.length })) as SearchResponse
+    tickets.push(...response.issues)
+  } while (tickets.length < response.total)
 
-  return response.issues
+  return tickets
 }
