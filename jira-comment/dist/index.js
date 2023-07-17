@@ -58219,8 +58219,13 @@ function queryJiraTickets(jira) {
             }
             jql = `key in (${ticketKeys.join(',')})`;
         }
-        const response = (yield jira.searchJira(jql));
-        return response.issues;
+        const tickets = [];
+        let response;
+        do {
+            response = (yield jira.searchJira(jql, { startAt: tickets.length }));
+            tickets.push(...response.issues);
+        } while (tickets.length < response.total);
+        return tickets;
     });
 }
 exports.queryJiraTickets = queryJiraTickets;
