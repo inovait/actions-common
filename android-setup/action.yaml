@@ -11,13 +11,13 @@ runs:
       with:
         java-version: '${{ inputs.java_version }}'
         distribution: temurin
-    - uses: inovait/action-localcache@a4627c88dfd2460d515056e1e29abee649252ee3
+    - uses: inovait/action-localcache@v1
       name: "Cache gradle wrapper"
       with:
         folder: ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-wrapper
         restore: '${{ runner.debug != 1 }}'
-    - uses: inovait/action-localcache@a4627c88dfd2460d515056e1e29abee649252ee3
+    - uses: inovait/action-localcache@v1
       name: "Cache gradle dependencies"
       with:
         folder: ~/.gradle/caches/modules-2
