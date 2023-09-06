@@ -11770,7 +11770,7 @@ class ParsedCommit {
 }
 exports.ParsedCommit = ParsedCommit;
 function parseCommits(commits) {
-    const commitRegex = /^(\[([A-Z]{2,4}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
+    const commitRegex = /^(\[([A-Z]{2,6}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
     return commits.filter(rawCommit => rawCommit.parent.length === 1).map(rawCommit => {
         var _a;
         let summary = '';
@@ -11790,7 +11790,7 @@ function parseCommits(commits) {
             let jiraTicket = match[2];
             let commitResolved = false;
             if (jiraTicket == null) {
-                const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g;
+                const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g;
                 const jiraMatchInBody = jiraRegex.exec(body !== null && body !== void 0 ? body : '');
                 if (jiraMatchInBody != null) {
                     jiraTicket = jiraMatchInBody[3];
