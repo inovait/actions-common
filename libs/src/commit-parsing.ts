@@ -21,7 +21,7 @@ export class ParsedCommit {
 }
 
 export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
-  const commitRegex = /^(\[([A-Z]{2,4}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
+  const commitRegex = /^(\[([A-Z]{2,6}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
   return commits.filter(rawCommit => rawCommit.parent.length === 1).map(rawCommit => {
     let summary: string = ''
@@ -45,7 +45,7 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
       let jiraTicket = match[2]
       let commitResolved: boolean = false
       if (jiraTicket == null) {
-        const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,4}-[0-9]+)/g
+        const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
         const jiraMatchInBody = jiraRegex.exec(body ?? '')
         if (jiraMatchInBody != null) {
           jiraTicket = jiraMatchInBody[3]

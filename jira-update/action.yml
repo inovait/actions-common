@@ -9,6 +9,8 @@ inputs:
     description: '(Optional) Set fix version for this ticket'
   priority:
     description: '(Optional) Set priority for this ticket'
+  field:
+    description: '(Optional) Set custom field for this ticket'
 runs:
   using: 'node16'
   main: 'dist/index.js'
