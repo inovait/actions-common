@@ -223,6 +223,7 @@ Inputs:
 * `jql` - [JQL](https://gist.github.com/emmajane/59321345a81a4f5837c0) query. When specified, 
 action will update all tickets that match this JQL for transition.  
 (either `tickets` or `jql` is required)
+* `field` - (Optional) Custom field for specifying field of tickets to update
 
 Possible fields to update:
 
@@ -237,6 +238,15 @@ Example usage:
     tickets: JT-1,JT-2
     fixVersion: '1.0.0'
     priority: 'Low'
+```
+
+Custom field example usage:
+```yaml
+- name: Update jira tickets
+  uses: inovait/actions-common/jira-update@v1
+  with:
+    tickets: JT-1,JT-2
+    field: 'customfield_10029=New_Tag'
 ```
 
 # Versioning
