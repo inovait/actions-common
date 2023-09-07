@@ -1,4 +1,5 @@
 import { CommitObject } from 'isomorphic-git'
+import * as core from '@actions/core'
 
 export class ParsedCommit {
   constructor(commit: CommitObject, clearedSummary: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
@@ -31,8 +32,10 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
       const newLinePosition = rawCommit.message.indexOf('\n')
       summary = rawCommit.message.substring(0, newLinePosition)
       body = rawCommit.message.substring(newLinePosition + 1)
+      core.info('body 35' + body)
     } else {
       summary = rawCommit.message
+      core.info('summary 38' + summary)
       body = undefined
     }
 
@@ -49,6 +52,7 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
         const jiraMatchInBody = jiraRegex.exec(body ?? '')
         if (jiraMatchInBody != null) {
           jiraTicket = jiraMatchInBody[3]
+          core.info('jira ticket 55' + jiraTicket)
           const keyword = jiraMatchInBody[2]
 
           if (resolveKeywords.includes(keyword)) {
@@ -56,6 +60,8 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
           }
         }
       }
+
+      core.info('jira ticket 64' + jiraTicket)
 
       return new ParsedCommit(
         rawCommit,
@@ -70,11 +76,12 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
       const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
       const jiraMatchInBody = jiraRegex.exec(body ?? '')
 
-      let jiraTicket: string | undefined = undefined
+      let jiraTicket: string | undefined
       let commitResolved: boolean = false
 
       if (jiraMatchInBody != null) {
         jiraTicket = jiraMatchInBody[3]
+        core.info('jira ticket 84' + jiraTicket)
         const keyword = jiraMatchInBody[2]
 
         if (resolveKeywords.includes(keyword)) {
