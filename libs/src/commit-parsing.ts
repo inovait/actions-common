@@ -67,7 +67,22 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
         commitResolved
       )
     } else {
-      return new ParsedCommit(rawCommit, summary, undefined, undefined, undefined)
+      const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
+      const jiraMatchInBody = jiraRegex.exec(body ?? '')
+
+      let jiraTicket: string | undefined = undefined
+      let commitResolved: boolean = false
+
+      if (jiraMatchInBody != null) {
+        jiraTicket = jiraMatchInBody[3]
+        const keyword = jiraMatchInBody[2]
+
+        if (resolveKeywords.includes(keyword)) {
+          commitResolved = true
+        }
+      }
+
+      return new ParsedCommit(rawCommit, summary, undefined, undefined, jiraTicket, undefined, commitResolved)
     }
   })
 }

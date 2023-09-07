@@ -38,7 +38,7 @@ async function main(): Promise<void> {
       }
 
       if (field != null) {
-        const fieldSplit = field.split('=')
+        const fieldSplit = field.split('+=')
 
         if (fieldSplit.length === 2) {
           const fieldName = fieldSplit[0]
