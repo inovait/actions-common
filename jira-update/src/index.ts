@@ -5,6 +5,7 @@ async function main(): Promise<void> {
   try {
     const fixVersion: string = core.getInput('fixVersion', { trimWhitespace: true })
     const priority: string = core.getInput('priority', { trimWhitespace: true })
+    const field: string = core.getInput('field', { trimWhitespace: true })
 
     const jira = await getJiraClient()
     const tickets = await queryJiraTickets(jira)
@@ -34,6 +35,23 @@ async function main(): Promise<void> {
         ]
 
         performRegularUpdate = true
+      }
+
+      if (field != null) {
+        const fieldSplit = field.split('+=')
+
+        if (fieldSplit.length === 2) {
+          const fieldName = fieldSplit[0]
+          const fieldToInsert = fieldSplit[1]
+
+          updateObject[fieldName] = [
+            {
+              add: fieldToInsert
+            }
+          ]
+
+          performRegularUpdate = true
+        }
       }
 
       console.info(`Updating ${ticket.key}`)

@@ -43,10 +43,15 @@ test('detect all jira tickets from commits', () => {
         'feat: feature 74',
         '2018-11-07T07:48:01+01:00',
         'fix ABC-D73'
+      ),
+      createFakeCommit(
+        '340762ccc0ac26ab71c0579ac1f2a61211c21403',
+        'SPAAT-1536: Ticket title\n\nJIRA: https://inovait.atlassian.net/browse/SPAAT-1542\nTicket description',
+        '2018-11-07T07:48:01+01:00',
       )
     ]
 
-  expect(getJiraTickets(commits)).toEqual(['ABC-70', 'ABC-71', 'ABC-72', 'ABC-73'])
+  expect(getJiraTickets(commits)).toEqual(['ABC-70', 'ABC-71', 'ABC-72', 'ABC-73', 'SPAAT-1542'])
 })
 
 test('detect only jira tickets that have been resolved from commits', () => {
