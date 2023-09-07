@@ -73,7 +73,7 @@ function main() {
                     performRegularUpdate = true;
                 }
                 if (field != null) {
-                    const fieldSplit = field.split('=');
+                    const fieldSplit = field.split('+=');
                     if (fieldSplit.length === 2) {
                         const fieldName = fieldSplit[0];
                         const fieldToInsert = fieldSplit[1];
