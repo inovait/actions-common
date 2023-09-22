@@ -13,6 +13,7 @@ function getJiraTickets(commits, onlyFinalCommits = false) {
     const parsedCommits = (0, commit_parsing_1.parseCommits)(commits);
     const tickets = [];
     for (const commit of parsedCommits) {
+        console.log('Commit', commit);
         if (commit.jiraTicket != null && (!onlyFinalCommits || commit.isCommitResolved === true)) {
             tickets.push(commit.jiraTicket);
         }
