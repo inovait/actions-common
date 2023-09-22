@@ -9,6 +9,8 @@ export async function gatherCommits(folder: string, fromSha: string, toSha: stri
     oid: fromSha
   })
 
+  console.log('Commit:', fromCommit)
+
   const since = new Date(fromCommit.commit.committer.timestamp * 1000)
 
   const results = await log({
@@ -17,6 +19,8 @@ export async function gatherCommits(folder: string, fromSha: string, toSha: stri
     ref: toSha,
     since
   })
+
+  console.log('Result', results.map((result) => result.commit))
 
   return results.map((result) => result.commit)
 }
