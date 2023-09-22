@@ -11694,6 +11694,7 @@ function gatherCommits(folder, fromSha, toSha) {
             dir: folder,
             oid: fromSha
         });
+        console.log('Commit:', fromCommit);
         const since = new Date(fromCommit.commit.committer.timestamp * 1000);
         const results = yield (0, isomorphic_git_1.log)({
             fs,
@@ -11701,6 +11702,7 @@ function gatherCommits(folder, fromSha, toSha) {
             ref: toSha,
             since
         });
+        console.log('Result', results.map((result) => result.commit));
         return results.map((result) => result.commit);
     });
 }
