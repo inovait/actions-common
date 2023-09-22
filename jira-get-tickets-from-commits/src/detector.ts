@@ -6,7 +6,7 @@ export function getJiraTickets(commits: CommitObject[], onlyFinalCommits: boolea
   const tickets: string[] = []
 
   for (const commit of parsedCommits) {
-    console.log("Commit", commit)
+    console.log('Commit', commit)
     if (commit.jiraTicket != null && (!onlyFinalCommits || commit.isCommitResolved === true)) {
       tickets.push(commit.jiraTicket)
     }
