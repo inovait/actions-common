@@ -14914,22 +14914,43 @@ const isomorphic_git_1 = __nccwpck_require__(9860);
 const fs = __importStar(__nccwpck_require__(7147));
 function gatherCommits(folder, fromSha, toSha) {
     return __awaiter(this, void 0, void 0, function* () {
-        const fromCommit = yield (0, isomorphic_git_1.readCommit)({
-            fs,
-            dir: folder,
-            oid: fromSha
-        });
-        const since = new Date(fromCommit.commit.committer.timestamp * 1000);
-        const results = yield (0, isomorphic_git_1.log)({
-            fs,
-            dir: folder,
-            ref: toSha,
-            since
-        });
-        return results.map((result) => result.commit);
+        const commits = yield getCommits(folder, fromSha, toSha);
+        return commits.map((result) => result.commit);
     });
 }
 exports.gatherCommits = gatherCommits;
+function getCommits(dir, fromSha, toSha) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const tips = [
+            yield (0, isomorphic_git_1.readCommit)({
+                fs,
+                dir,
+                oid: toSha
+            })
+        ];
+        const readCommits = [];
+        while (tips.length > 0) {
+            const commit = tips.pop();
+            if (commit.oid === fromSha) {
+                break;
+            }
+            readCommits.push(commit);
+            for (const parentSha of commit.commit.parent) {
+                if (tips.map(commit => commit.oid).includes(parentSha)) {
+                    continue;
+                }
+                const parentCommit = yield (0, isomorphic_git_1.readCommit)({
+                    fs,
+                    dir,
+                    oid: parentSha
+                });
+                tips.push(parentCommit);
+            }
+        }
+        readCommits.sort((a, b) => a.commit.committer.timestamp - b.commit.committer.timestamp);
+        return readCommits;
+    });
+}
 
 
 /***/ }),
@@ -14956,7 +14977,7 @@ exports.ParsedCommit = ParsedCommit;
 function parseCommits(commits) {
     const commitRegex = /^(\[([A-Z]{2,6}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
     return commits.filter(rawCommit => rawCommit.parent.length === 1).map(rawCommit => {
-        var _a;
+        var _a, _b;
         let summary = '';
         let body;
         if (rawCommit.message.includes('\n')) {
@@ -14988,7 +15009,7 @@ function parseCommits(commits) {
         }
         else {
             const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g;
-            const jiraMatchInBody = jiraRegex.exec(body !== null && body !== void 0 ? body : '');
+            const jiraMatchInBody = jiraRegex.exec((_b = rawCommit.message) !== null && _b !== void 0 ? _b : '');
             let jiraTicket;
             let commitResolved = false;
             if (jiraMatchInBody != null) {
