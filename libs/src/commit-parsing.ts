@@ -68,7 +68,7 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
       )
     } else {
       const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
-      const jiraMatchInBody = jiraRegex.exec(body ?? '')
+      const jiraMatchInBody = jiraRegex.exec(rawCommit.message ?? '')
 
       let jiraTicket: string | undefined
       let commitResolved: boolean = false
