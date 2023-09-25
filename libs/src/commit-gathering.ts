@@ -19,7 +19,7 @@ async function getCommits(dir: string, fromSha: string, toSha: string): Promise<
   const readCommits: ReadCommitResult[] = []
 
   while (tips.length > 0) {
-    const commit = tips.pop() as ReadCommitResult
+    const commit = tips.shift() as ReadCommitResult
     console.log('Process', commit.oid)
     if (commit.oid === fromSha) {
       break
