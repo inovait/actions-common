@@ -11705,6 +11705,7 @@ function getCommits(dir, fromSha, toSha) {
         const readCommits = [];
         while (tips.length > 0) {
             const commit = tips.pop();
+            console.log('Process', commit.oid);
             if (commit.oid === fromSha) {
                 break;
             }
