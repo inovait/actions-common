@@ -41,5 +41,10 @@ async function getCommits(dir: string, fromSha: string, toSha: string): Promise<
     }
   }
 
+  readCommits.sort(
+    (a, b) =>
+      a.commit.committer.timestamp - b.commit.committer.timestamp
+  )
+
   return readCommits
 }
