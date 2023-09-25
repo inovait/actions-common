@@ -12,7 +12,7 @@ async function getCommits(dir: string, fromSha: string, toSha: string): Promise<
     await readCommit({
       fs,
       dir,
-      oid: fromSha
+      oid: toSha
     })
   ]
 
@@ -20,7 +20,7 @@ async function getCommits(dir: string, fromSha: string, toSha: string): Promise<
 
   while (tips.length > 0) {
     const commit = tips.pop() as ReadCommitResult
-    if (commit.oid === toSha) {
+    if (commit.oid === fromSha) {
       break
     }
 
