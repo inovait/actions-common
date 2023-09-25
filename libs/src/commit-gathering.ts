@@ -1,22 +1,45 @@
 // These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-import { readCommit, log, CommitObject } from 'isomorphic-git'
+import { readCommit, CommitObject, ReadCommitResult } from 'isomorphic-git'
 import * as fs from 'fs'
 
 export async function gatherCommits(folder: string, fromSha: string, toSha: string): Promise<CommitObject[]> {
-  const fromCommit = await readCommit({
-    fs,
-    dir: folder,
-    oid: fromSha
-  })
+  const commits = await getCommits(folder, fromSha, toSha)
+  return commits.map((result) => result.commit)
+}
 
-  const since = new Date(fromCommit.commit.committer.timestamp * 1000)
+async function getCommits(dir: string, fromSha: string, toSha: string): Promise<ReadCommitResult[]> {
+  const tips = [
+    await readCommit({
+      fs,
+      dir,
+      oid: fromSha
+    })
+  ]
 
-  const results = await log({
-    fs,
-    dir: folder,
-    ref: toSha,
-    since
-  })
+  const readCommits: ReadCommitResult[] = []
 
-  return results.map((result) => result.commit)
+  while (tips.length > 0) {
+    const commit = tips.pop() as ReadCommitResult
+    if (commit.oid === toSha) {
+      break
+    }
+
+    readCommits.push(commit)
+
+    for (const parentSha of commit.commit.parent) {
+      if (tips.map(commit => commit.oid).includes(parentSha)) {
+        continue
+      }
+
+      const parentCommit = await readCommit({
+        fs,
+        dir,
+        oid: parentSha
+      })
+
+      tips.push(parentCommit)
+    }
+  }
+
+  return readCommits
 }
