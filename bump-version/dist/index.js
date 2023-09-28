@@ -6041,7 +6041,7 @@ function gatherCommits(folder, fromSha, toSha) {
     });
     return res.toString().split('!!ZZ!!')
         .filter(commitStr => commitStr.trim().length > 0)
-        .map(commitStr => JSON.parse(commitStr));
+        .map(commitStr => { console.log(commitStr); return JSON.parse(commitStr); });
 }
 exports.gatherCommits = gatherCommits;
 
