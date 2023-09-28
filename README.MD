@@ -53,7 +53,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@v2
+    uses: inovait/actions-common/git-changelog-generator@v3
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -72,7 +72,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@v2
+    uses: inovait/actions-common/changelog-since-last-build@v3
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -138,7 +138,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@v2
+  uses: inovait/actions-common/jira-get-tickets-from-commits@v3
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -152,7 +152,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@v2
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@v3
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
@@ -291,7 +291,7 @@ Example usage:
 ```yaml
 - name: Bump version from commits
   id: version-step
-  uses: inovait/actions-common/bump-version@v2
+  uses: inovait/actions-common/bump-version@v3
   with:
     versionFile: 'version.txt'
     increment: auto
@@ -307,7 +307,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@v2
+  uses: inovait/actions-common/bump-version-since-last-build@v3
   with:
     versionFile: 'version.txt'
 ```

@@ -20,9 +20,8 @@ runs:
       with:
         main-branch-name: "${{ env.CURRENT_BRANCH }}"
     - name: Get jira tickets
-      uses: inovait/actions-common/jira-get-tickets-from-commits@v2
+      uses: inovait/actions-common/jira-get-tickets-from-commits@v3
       id: internal_jira
       with:
         from: '${{ env.NX_BASE }}'
         to: '${{ env.NX_HEAD }}'
-
