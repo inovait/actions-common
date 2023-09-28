@@ -1,7 +1,7 @@
+import { Commit } from 'action_common_libs/src/commit-gathering'
 import { parseCommits } from 'action_common_libs/src/commit-parsing'
-import { CommitObject } from 'isomorphic-git'
 
-export function getVersionToBump(commits: CommitObject[]): string {
+export function getVersionToBump(commits: Commit[]): string {
   const parsedCommits = parseCommits(commits)
 
   if (parsedCommits.find((commit) => commit.breaking) != null) {

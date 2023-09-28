@@ -25,7 +25,7 @@ runs:
       with:
         main-branch-name: "${{ env.CURRENT_BRANCH }}"
     - name: Get version
-      uses: inovait/actions-common/bump-version@v2
+      uses: inovait/actions-common/bump-version@v3
       id: internal_version
       with:
         version: '${{ inputs.version }}'
@@ -33,4 +33,3 @@ runs:
         increment: 'auto'
         from: '${{ env.NX_BASE }}'
         to: '${{ env.NX_HEAD }}'
-

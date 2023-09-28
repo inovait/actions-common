@@ -8,14 +8,13 @@
     "lint": "eslint src/**/*.ts",
     "package": "ncc build --source-map",
     "test": "jest",
-    "all": "npm run lint && npm run build && npm run package"
+    "all": "npm run lint && npm run build && npm run test && npm run package"
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.1.1",
-    "action_common_libs": "file:../libs",
-    "isomorphic-git": "1.23.0"
+    "action_common_libs": "file:../libs"
   },
   "devDependencies": {
     "@types/jest": "^29.2.5",

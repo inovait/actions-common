@@ -1,22 +1,35 @@
-// These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-import { readCommit, log, CommitObject } from 'isomorphic-git'
-import * as fs from 'fs'
+import * as child_process from 'node:child_process'
 
-export async function gatherCommits(folder: string, fromSha: string, toSha: string): Promise<CommitObject[]> {
-  const fromCommit = await readCommit({
-    fs,
-    dir: folder,
-    oid: fromSha
-  })
+export function gatherCommits(folder: string, fromSha: string, toSha: string): Commit[] {
+  // Use git log to efficiently list all commits
+  // based on https://gist.github.com/cekstam/a7758b8f315835d479f379715eebd0c3
+  const res = child_process.execSync(
+      `git log ${fromSha}..${toSha} \\
+  --pretty=format:'{^^^^hash^^^^:^^^^%H^^^^,^^^^date^^^^:^^^^%cI^^^^,^^^^parents^^^^:^^^^%P^^^^,^^^^summary^^^^:^^^^%s^^^^,^^^^body^^^^:^^^^%b^^^^}!!ZZ!!' \\
+  | sed 's/"/\\\\"/g' \\
+  | sed 's/\\^^^^/"/g'`,
+      {
+        cwd: folder
+      }
+  )
 
-  const since = new Date(fromCommit.commit.committer.timestamp * 1000)
+  return res.toString().split('!!ZZ!!')
+    .filter(commitStr => commitStr.trim().length > 0)
+    .map(commitStr => JSON.parse(commitStr) as Commit)
+}
 
-  const results = await log({
-    fs,
-    dir: folder,
-    ref: toSha,
-    since
-  })
+export interface Commit {
+  hash: string
+  /**
+   * Date in ISO8601 format
+   */
+  date: string
 
-  return results.map((result) => result.commit)
+  /**
+   * Space separated list of parents
+   */
+  parents: string
+
+  summary: string
+  body: string
 }

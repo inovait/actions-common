@@ -14,7 +14,7 @@ then you can add the changelog action:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@1cf434ec3089ad171163da8ff16690ad09eeacf4
+    uses: inovait/actions-common/git-changelog-generator@v3
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
