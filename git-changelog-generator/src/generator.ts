@@ -1,14 +1,14 @@
+import { Commit } from 'action_common_libs/src/commit-gathering'
 import { parseCommits, ParsedCommit } from 'action_common_libs/src/commit-parsing'
-import { CommitObject } from 'isomorphic-git'
 
 export interface GenerationOptions {
   gitCommitUrlPrefix: string
   jiraUrl?: string
 }
 
-export function generateChangelog(commits: CommitObject[], options: GenerationOptions): string {
+export function generateChangelog(commits: Commit[], options: GenerationOptions): string {
   const sortedCommits = commits.sort((a, b) =>
-    a.committer.timestamp < b.committer.timestamp ? -1 : 1
+    a.date < b.date ? -1 : 1
   )
   const parsedCommits = parseCommits(sortedCommits)
 
@@ -89,7 +89,7 @@ export function generateCommitList(
     }
 
     listText += commit.clearedSummary
-    const sha = commit.commit.tree
+    const sha = commit.commit.hash
     listText += ` ([${sha.substring(0, 8)}](${options.gitCommitUrlPrefix}${sha}))\n`
   }
 

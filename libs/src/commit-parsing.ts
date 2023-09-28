@@ -1,7 +1,7 @@
-import { CommitObject } from 'isomorphic-git'
+import { Commit } from './commit-gathering'
 
 export class ParsedCommit {
-  constructor(commit: CommitObject, clearedSummary: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
+  constructor(commit: Commit, clearedSummary: string, scope?: string, type?: string, jiraTicket?: string, breaking?: boolean, isCommitResolved?: boolean) {
     this.commit = commit
     this.clearedSummary = clearedSummary
     this.scope = scope
@@ -15,26 +15,17 @@ export class ParsedCommit {
   scope?: string
   jiraTicket?: string
   clearedSummary: string
-  commit: CommitObject
+  commit: Commit
   breaking?: boolean
   isCommitResolved?: boolean
 }
 
-export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
+export function parseCommits(commits: Commit[]): ParsedCommit[] {
   const commitRegex = /^(\[([A-Z]{2,6}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
-  return commits.filter(rawCommit => rawCommit.parent.length === 1).map(rawCommit => {
-    let summary: string = ''
-    let body: string | undefined
-
-    if (rawCommit.message.includes('\n')) {
-      const newLinePosition = rawCommit.message.indexOf('\n')
-      summary = rawCommit.message.substring(0, newLinePosition)
-      body = rawCommit.message.substring(newLinePosition + 1)
-    } else {
-      summary = rawCommit.message
-      body = undefined
-    }
+  return commits.filter(rawCommit => rawCommit.parents.split(' ').length === 1).map(rawCommit => {
+    const summary: string = rawCommit.summary
+    const body = rawCommit.body
 
     const match = commitRegex.exec(summary)
     if (match != null) {
@@ -68,7 +59,7 @@ export function parseCommits(commits: CommitObject[]): ParsedCommit[] {
       )
     } else {
       const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
-      const jiraMatchInBody = jiraRegex.exec(rawCommit.message ?? '')
+      const jiraMatchInBody = jiraRegex.exec(rawCommit.summary + '\n' + rawCommit.body)
 
       let jiraTicket: string | undefined
       let commitResolved: boolean = false

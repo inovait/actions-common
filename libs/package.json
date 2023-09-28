@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@actions/core": "1.10.0",
-    "isomorphic-git": "1.23.0",
     "jira-client": "8.2.2",
     "yaml": "2.2.1"
   },

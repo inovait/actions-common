@@ -1,51 +1,33 @@
-// These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-import { readCommit, CommitObject, ReadCommitResult } from 'isomorphic-git'
-import * as fs from 'fs'
+import * as child_process from 'node:child_process'
 
-export async function gatherCommits(folder: string, fromSha: string, toSha: string): Promise<CommitObject[]> {
-  const commits = await getCommits(folder, fromSha, toSha)
-  return commits.map((result) => result.commit)
-}
-
-async function getCommits(dir: string, fromSha: string, toSha: string): Promise<ReadCommitResult[]> {
-  const tips = [
-    await readCommit({
-      fs,
-      dir,
-      oid: toSha
-    })
-  ]
-
-  const readCommits: ReadCommitResult[] = []
-
-  while (tips.length > 0) {
-    const commit = tips.shift() as ReadCommitResult
-    console.log('Process', commit.oid)
-    if (commit.oid === fromSha) {
-      break
-    }
-
-    readCommits.push(commit)
-
-    for (const parentSha of commit.commit.parent) {
-      if (tips.map(commit => commit.oid).includes(parentSha)) {
-        continue
+export function gatherCommits(folder: string, fromSha: string, toSha: string): Commit[] {
+  const res = child_process.execSync(
+      `git log ${fromSha}..${toSha} \\
+  --pretty=format:'{^^^^hash^^^^:^^^^%H^^^^,^^^^date^^^^:^^^^%cI^^^^,^^^^parents^^^^:^^^^%P^^^^,^^^^summary^^^^:^^^^%s^^^^,^^^^body^^^^:^^^^%b^^^^}!!ZZ!!' \\
+  | sed 's/"/\\\\"/g' \\
+  | sed 's/\\^^^^/"/g'`,
+      {
+        cwd: folder
       }
-
-      const parentCommit = await readCommit({
-        fs,
-        dir,
-        oid: parentSha
-      })
-
-      tips.push(parentCommit)
-    }
-  }
-
-  readCommits.sort(
-    (a, b) =>
-      a.commit.committer.timestamp - b.commit.committer.timestamp
   )
 
-  return readCommits
+  return res.toString().split('!!ZZ!!')
+    .filter(commitStr => commitStr.trim().length > 0)
+    .map(commitStr => JSON.parse(commitStr) as Commit)
+}
+
+export interface Commit {
+  hash: string
+  /**
+   * Date in ISO8601 format
+   */
+  date: string
+
+  /**
+   * Space separated list of parents
+   */
+  parents: string
+
+  summary: string
+  body: string
 }
