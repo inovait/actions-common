@@ -15,7 +15,10 @@ export function gatherCommits(folder: string, fromSha: string, toSha: string): C
 
   return res.toString().split('!!ZZ!!')
     .filter(commitStr => commitStr.trim().length > 0)
-    .map(commitStr => { console.log(commitStr); return JSON.parse(commitStr) as Commit })
+    .map(commitStr => {
+      const singleLineCommitStr = commitStr.replace('\n', '\\n')
+      console.log(singleLineCommitStr); return JSON.parse(singleLineCommitStr) as Commit
+    })
 }
 
 export interface Commit {
