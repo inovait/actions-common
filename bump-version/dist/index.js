@@ -6031,6 +6031,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.gatherCommits = void 0;
 const child_process = __importStar(__nccwpck_require__(7718));
 function gatherCommits(folder, fromSha, toSha) {
+    // Use git log to efficiently list all commits
+    // based on https://gist.github.com/cekstam/a7758b8f315835d479f379715eebd0c3
     const res = child_process.execSync(`git log ${fromSha}..${toSha} \\
   --pretty=format:'{^^^^hash^^^^:^^^^%H^^^^,^^^^date^^^^:^^^^%cI^^^^,^^^^parents^^^^:^^^^%P^^^^,^^^^summary^^^^:^^^^%s^^^^,^^^^body^^^^:^^^^%b^^^^}!!ZZ!!' \\
   | sed 's/"/\\\\"/g' \\
