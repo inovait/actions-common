@@ -2858,7 +2858,7 @@ function gatherCommits(folder, fromSha, toSha) {
     return res.toString().split('!!ZZ!!')
         .filter(commitStr => commitStr.trim().length > 0)
         .map(commitStr => {
-        const singleLineCommitStr = commitStr.trim().replace('\n', '\\n');
+        const singleLineCommitStr = commitStr.trim().replace('\n', '\\n').replace('\t', '\\t');
         console.log(singleLineCommitStr);
         return JSON.parse(singleLineCommitStr);
     });
