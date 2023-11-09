@@ -83,7 +83,22 @@ export async function queryJiraTickets(jira: JiraApi): Promise<JiraTicket[]> {
   const tickets: JiraTicket[] = []
   let response: SearchResponse
   do {
-    response = (await jira.searchJira(jql, { startAt: tickets.length })) as SearchResponse
+    // @ts-expect-error
+    // Jira types do not have validateQuery here, so we must use @ts-ignore
+    const rawResponse = await jira.searchJira(jql, { startAt: tickets.length, validateQuery: 'warn' })
+    const warnings: string[] = rawResponse.warningMessages ?? []
+
+    for (const warning of warnings) {
+      if (warning.includes('An issue with key')) {
+        // This warning just means that we did not find desired issue. User might have just misstyped issue key.
+        // Forward it as warning
+        core.warning(warning)
+      } else {
+        throw Error(warning)
+      }
+    }
+
+    response = rawResponse as SearchResponse
     tickets.push(...response.issues)
   } while (tickets.length < response.total)
 
