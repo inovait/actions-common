@@ -26,7 +26,7 @@ async function main(): Promise<void> {
     for (const ticket of tickets) {
       const status = ticket.fields.status
       if (from != null && from.length > 0 && status.name?.toLowerCase() !== from) {
-        core.info(`Ticket ${ticket.key} is not in '${from}', but in '${status.name}'. Skipping...`)
+        core.warning(`Ticket ${ticket.key} is not in '${from}', but in '${status.name}'. Skipping...`)
         continue
       }
 
