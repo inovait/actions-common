@@ -14,5 +14,5 @@ outputs:
   tickets:
     description: 'Comma-separated list of found tickets'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'

@@ -21,8 +21,8 @@ jobs:
       # Github Actions run with Node 16 for now, so we must build with Node 16
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - run: "sudo apt-get install -y libkrb5-dev curl libcurl4 libssl-dev"
+          node-version: 20
+      - run: "sudo apt-get update && sudo apt-get install -y libkrb5-dev curl libcurl4 libssl-dev"
       - uses: actions/cache@v3
         name: "Cache npm packages"
         with:
@@ -67,5 +67,5 @@ jobs:
       - run: 'git add jira-transition/dist/\*'
       - run: 'git add jira-update/dist/\*'
       - run: 'git add bump-version/dist/\*'
-      - run: 'git commit -m "ci: build actions" || true'
+      - run: 'git commit -m "chore: build actions" || true'
       - run: 'git push'
