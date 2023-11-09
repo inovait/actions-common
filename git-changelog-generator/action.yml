@@ -19,5 +19,5 @@ outputs:
   changelog:
     description: 'Changelog in the markdown format'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'

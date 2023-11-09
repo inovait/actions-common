@@ -13,5 +13,5 @@ inputs:
   resolution:
     description: '(Optional) Also set resolution of this ticket to desired value'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
