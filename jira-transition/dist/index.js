@@ -53,7 +53,7 @@ function main() {
             for (const ticket of tickets) {
                 const status = ticket.fields.status;
                 if (from != null && from.length > 0 && ((_d = status.name) === null || _d === void 0 ? void 0 : _d.toLowerCase()) !== from) {
-                    core.info(`Ticket ${ticket.key} is not in '${from}', but in '${status.name}'. Skipping...`);
+                    core.warning(`Ticket ${ticket.key} is not in '${from}', but in '${status.name}'. Skipping...`);
                     continue;
                 }
                 const allPossibleTransitions = yield jira.listTransitions(ticket.key);
@@ -58218,7 +58218,7 @@ function getJiraClient() {
 }
 exports.getJiraClient = getJiraClient;
 function queryJiraTickets(jira) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     return __awaiter(this, void 0, void 0, function* () {
         const ticketsRaw = (_a = core.getInput('tickets')) !== null && _a !== void 0 ? _a : '';
         const inputJql = (_c = (_b = core.getInput('jql')) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : '';
@@ -58240,7 +58240,21 @@ function queryJiraTickets(jira) {
         const tickets = [];
         let response;
         do {
-            response = (yield jira.searchJira(jql, { startAt: tickets.length }));
+            // @ts-expect-error
+            // Jira types do not have validateQuery here, so we must use @ts-ignore
+            const rawResponse = yield jira.searchJira(jql, { startAt: tickets.length, validateQuery: 'warn' });
+            const warnings = (_d = rawResponse.warningMessages) !== null && _d !== void 0 ? _d : [];
+            for (const warning of warnings) {
+                if (warning.includes('An issue with key')) {
+                    // This warning just means that we did not find desired issue. User might have just misstyped issue key.
+                    // Forward it as warning
+                    core.warning(warning);
+                }
+                else {
+                    throw Error(warning);
+                }
+            }
+            response = rawResponse;
             tickets.push(...response.issues);
         } while (tickets.length < response.total);
         return tickets;
