@@ -185,7 +185,7 @@ Example usage:
 
 ```yaml
 - name: Make a jira comment
-  uses: inovait/actions-common/jira-comment@v2
+  uses: inovait/actions-common/jira-comment@v4
   with:
     tickets: JT-1,JT-2
     comment: 'This ticket is included in build 1.2.${{ env.BUILD_NUMBER }}.'
@@ -207,7 +207,7 @@ Example usage:
 
 ```yaml
 - name: Transition tickets to test
-  uses: inovait/actions-common/jira-transition@v2
+  uses: inovait/actions-common/jira-transition@v4
   with:
     tickets: JT-1,JT-2
     from: 'In Progress'
@@ -233,7 +233,7 @@ Example usage:
 
 ```yaml
 - name: Update jira tickets
-  uses: inovait/actions-common/jira-update@v2
+  uses: inovait/actions-common/jira-update@v4
   with:
     tickets: JT-1,JT-2
     fixVersion: '1.0.0'
