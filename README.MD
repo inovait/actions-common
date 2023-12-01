@@ -35,9 +35,9 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@v2
+- uses: inovait/actions-common/android-setup@v5
   with:
-    java_version: 17
+    java-version: 17
 ```
 
 ### Run with emulator
