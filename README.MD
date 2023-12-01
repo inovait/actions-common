@@ -12,6 +12,20 @@ If you use any action that works on git history (such as changelog, jira tickets
     fetch-depth: 0
 ```
 
+## Java / Gradle
+
+### Setup Gradle build environment
+
+Setup java and enable dependency caching for gradle projects.
+
+Example usage:
+
+```yaml
+- uses: inovait/actions-common/gradle-setup@v5
+  with:
+    java-version: 17
+```
+
 ## Android
 
 ### Setup Android build environment
@@ -21,9 +35,9 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@v2
+- uses: inovait/actions-common/android-setup@v5
   with:
-    java_version: 17
+    java-version: 17
 ```
 
 ### Run with emulator
