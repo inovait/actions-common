@@ -82,6 +82,7 @@ function main() {
             console.log(error);
             core.setFailed(error.message);
         }
+        process.exit();
     });
 }
 function uploadRelease(inuit, files) {

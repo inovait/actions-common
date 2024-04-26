@@ -58,6 +58,8 @@ async function main(): Promise<void> {
     console.log(error)
     core.setFailed(error.message)
   }
+
+  process.exit()
 }
 
 async function uploadRelease(inuit: typeof Inuit, files: string[]): Promise<void> {
