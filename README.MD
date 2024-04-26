@@ -103,7 +103,7 @@ Example usage:
 
 ```yaml
   - name: Publish to spotlight
-    uses: inovait/actions-common/spotlight-publish@v2
+    uses: inovait/actions-common/spotlight-publish@v6
     with:
       api_key: '...'
       destination: 'release'
