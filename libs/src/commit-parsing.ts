@@ -21,7 +21,7 @@ export class ParsedCommit {
 }
 
 export function parseCommits(commits: Commit[]): ParsedCommit[] {
-  const commitRegex = /^(\[([A-Z]{2,6}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
+  const commitRegex = /^(\[(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
   return commits.filter(rawCommit => rawCommit.parents.split(' ').length === 1).map(rawCommit => {
     const summary: string = rawCommit.summary
@@ -30,16 +30,16 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
     const match = commitRegex.exec(summary)
     if (match != null) {
       const breaking = (body?.includes('BREAKING') ?? false) || (
-        match[6] != null && match[6].trim().length > 0
+        match[7] != null && match[7].trim().length > 0
       )
 
-      let jiraTicket = match[2]
+      let jiraTicket = match[2] ?? match[3]
       let commitResolved: boolean = false
       if (jiraTicket == null) {
-        const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
+        const jiraRegex = /(([0-9a-zA-Z]+) )?(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))/g
         const jiraMatchInBody = jiraRegex.exec(body ?? '')
         if (jiraMatchInBody != null) {
-          jiraTicket = jiraMatchInBody[3]
+          jiraTicket = jiraMatchInBody[3] ?? jiraMatchInBody[4]
           const keyword = jiraMatchInBody[2]
 
           if (resolveKeywords.includes(keyword)) {
@@ -50,22 +50,22 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
 
       return new ParsedCommit(
         rawCommit,
-        match[7].trim(),
-        match[5],
-        match[3],
+        match[8].trim(),
+        match[6],
+        match[4],
         jiraTicket,
         breaking,
         commitResolved
       )
     } else {
-      const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g
+      const jiraRegex = /(([0-9a-zA-Z]+) )?(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))/g
       const jiraMatchInBody = jiraRegex.exec(rawCommit.summary + '\n' + rawCommit.body)
 
       let jiraTicket: string | undefined
       let commitResolved: boolean = false
 
       if (jiraMatchInBody != null) {
-        jiraTicket = jiraMatchInBody[3]
+        jiraTicket = jiraMatchInBody[3] ?? jiraMatchInBody[4]
         const keyword = jiraMatchInBody[2]
 
         if (resolveKeywords.includes(keyword)) {
