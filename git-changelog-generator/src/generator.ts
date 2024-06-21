@@ -81,7 +81,12 @@ export function generateCommitList(
     listText += '* '
 
     if ((commit.jiraTicket != null) && (options.jiraUrl != null)) {
-      listText += `[${commit.jiraTicket}](${options.jiraUrl}/browse/${commit.jiraTicket}) - `
+      const isGithubTicket = !isNaN(Number(commit.jiraTicket))
+      if (isGithubTicket) {
+        listText += `[#${commit.jiraTicket}](${options.jiraUrl}/issues/${commit.jiraTicket}) - `
+      } else {
+        listText += `[${commit.jiraTicket}](${options.jiraUrl}/browse/${commit.jiraTicket}) - `
+      }
     }
 
     if (commit.scope != null) {

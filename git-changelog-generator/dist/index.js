@@ -40,7 +40,13 @@ function generateCommitList(commits, options) {
     for (const commit of commits) {
         listText += '* ';
         if ((commit.jiraTicket != null) && (options.jiraUrl != null)) {
-            listText += `[${commit.jiraTicket}](${options.jiraUrl}/browse/${commit.jiraTicket}) - `;
+            const isGithubTicket = !isNaN(Number(commit.jiraTicket));
+            if (isGithubTicket) {
+                listText += `[#${commit.jiraTicket}](${options.jiraUrl}/issues/${commit.jiraTicket}) - `;
+            }
+            else {
+                listText += `[${commit.jiraTicket}](${options.jiraUrl}/browse/${commit.jiraTicket}) - `;
+            }
         }
         if (commit.scope != null) {
             listText += `**${commit.scope}**: `;
@@ -2887,36 +2893,36 @@ class ParsedCommit {
 }
 exports.ParsedCommit = ParsedCommit;
 function parseCommits(commits) {
-    const commitRegex = /^(\[([A-Z]{2,6}-[0-9]+)] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
+    const commitRegex = /^(\[(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
     return commits.filter(rawCommit => rawCommit.parents.split(' ').length === 1).map(rawCommit => {
-        var _a;
+        var _a, _b, _c, _d;
         const summary = rawCommit.summary;
         const body = rawCommit.body;
         const match = commitRegex.exec(summary);
         if (match != null) {
-            const breaking = ((_a = body === null || body === void 0 ? void 0 : body.includes('BREAKING')) !== null && _a !== void 0 ? _a : false) || (match[6] != null && match[6].trim().length > 0);
-            let jiraTicket = match[2];
+            const breaking = ((_a = body === null || body === void 0 ? void 0 : body.includes('BREAKING')) !== null && _a !== void 0 ? _a : false) || (match[7] != null && match[7].trim().length > 0);
+            let jiraTicket = (_b = match[2]) !== null && _b !== void 0 ? _b : match[3];
             let commitResolved = false;
             if (jiraTicket == null) {
-                const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g;
+                const jiraRegex = /(([0-9a-zA-Z]+) )?(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))/g;
                 const jiraMatchInBody = jiraRegex.exec(body !== null && body !== void 0 ? body : '');
                 if (jiraMatchInBody != null) {
-                    jiraTicket = jiraMatchInBody[3];
+                    jiraTicket = (_c = jiraMatchInBody[3]) !== null && _c !== void 0 ? _c : jiraMatchInBody[4];
                     const keyword = jiraMatchInBody[2];
                     if (resolveKeywords.includes(keyword)) {
                         commitResolved = true;
                     }
                 }
             }
-            return new ParsedCommit(rawCommit, match[7].trim(), match[5], match[3], jiraTicket, breaking, commitResolved);
+            return new ParsedCommit(rawCommit, match[8].trim(), match[6], match[4], jiraTicket, breaking, commitResolved);
         }
         else {
-            const jiraRegex = /(([0-9a-zA-Z]+) )?([A-Z]{2,6}-[0-9]+)/g;
+            const jiraRegex = /(([0-9a-zA-Z]+) )?(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))/g;
             const jiraMatchInBody = jiraRegex.exec(rawCommit.summary + '\n' + rawCommit.body);
             let jiraTicket;
             let commitResolved = false;
             if (jiraMatchInBody != null) {
-                jiraTicket = jiraMatchInBody[3];
+                jiraTicket = (_d = jiraMatchInBody[3]) !== null && _d !== void 0 ? _d : jiraMatchInBody[4];
                 const keyword = jiraMatchInBody[2];
                 if (resolveKeywords.includes(keyword)) {
                     commitResolved = true;
