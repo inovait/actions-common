@@ -6074,7 +6074,7 @@ function parseCommits(commits) {
     const commitRegex = /^(\[(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/;
     return commits.filter(rawCommit => rawCommit.parents.split(' ').length === 1).map(rawCommit => {
         var _a, _b, _c, _d;
-        const summary = rawCommit.summary;
+        const summary = rawCommit.summary.trim();
         const body = rawCommit.body;
         const match = commitRegex.exec(summary);
         if (match != null) {
