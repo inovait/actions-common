@@ -24,7 +24,7 @@ export function parseCommits(commits: Commit[]): ParsedCommit[] {
   const commitRegex = /^(\[(?:([A-Z]{2,6}-[0-9]+)|#([0-9]+))] )?([a-zA-Z]+)(\((.+)\))?(!?):(.*)/
 
   return commits.filter(rawCommit => rawCommit.parents.split(' ').length === 1).map(rawCommit => {
-    const summary: string = rawCommit.summary
+    const summary: string = rawCommit.summary.trim()
     const body = rawCommit.body
 
     const match = commitRegex.exec(summary)

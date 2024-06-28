@@ -73,7 +73,7 @@ test('generate changelog for a minor release', () => {
       ),
       createFakeCommit(
         '962b3eb5cd9c6c9673ab2d818a560fe1a18765bb',
-        'fix: use SupervisorJob on ViewModel',
+        ' fix: use SupervisorJob on ViewModel',
         '2018-11-20T07:48:42+01:00',
       ),
       createFakeCommit(
@@ -83,7 +83,7 @@ test('generate changelog for a minor release', () => {
       ),
       createFakeCommit(
         '1ef779cdc35cf5844bb78965658cb818901a61a6',
-        'feat: remove ResourceLiveData.setValue deprecation',
+        'feat: remove ResourceLiveData.setValue deprecation ',
         '2018-11-07T07:43:33+01:00',
       ),
       createFakeCommit(
