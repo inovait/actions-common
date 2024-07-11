@@ -4,11 +4,6 @@ import { gatherCommits } from 'action_common_libs/src/commit-gathering'
 import { getVersionToBump } from './automatic_version_detector'
 import semver, { ReleaseType } from 'semver/preload'
 
-// These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-require('nodegit/dist/repository.js')
-require('nodegit/dist/commit.js')
-require('nodegit/dist/oid.js')
-
 async function main(): Promise<void> {
   try {
     const versionRaw: string = core.getInput('version', { trimWhitespace: true })
