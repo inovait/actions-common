@@ -286,7 +286,7 @@ Example usage:
 
 ```yaml
 - name: Bump minor version
-  uses: inovait/actions-common/bump-version@v7
+  uses: inovait/actions-common/bump-version@v10
   with:
     versionFile: 'version.txt'
     increment: minor
@@ -295,7 +295,7 @@ Example usage:
 ```yaml
 - name: Bump major version from file
   id: version-step
-  uses: inovait/actions-common/bump-version@v7
+  uses: inovait/actions-common/bump-version@v10
   with:
     version: '1.0.0'
     increment: major
@@ -305,7 +305,7 @@ Example usage:
 ```yaml
 - name: Bump version from commits
   id: version-step
-  uses: inovait/actions-common/bump-version@v7
+  uses: inovait/actions-common/bump-version@v10
   with:
     versionFile: 'version.txt'
     increment: auto
@@ -321,7 +321,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@v7
+  uses: inovait/actions-common/bump-version-since-last-build@v10
   with:
     versionFile: 'version.txt'
 ```
