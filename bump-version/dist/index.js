@@ -74,10 +74,6 @@ const fs = __importStar(__nccwpck_require__(3292));
 const commit_gathering_1 = __nccwpck_require__(8726);
 const automatic_version_detector_1 = __nccwpck_require__(1942);
 const preload_1 = __importDefault(__nccwpck_require__(4360));
-// These require statements are needed as a workaround for the https://github.com/vercel/ncc/issues/1024
-__nccwpck_require__(7990);
-__nccwpck_require__(803);
-__nccwpck_require__(3308);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -6122,30 +6118,6 @@ const resolveKeywords = [
     'resolves',
     'resolved'
 ];
-
-
-/***/ }),
-
-/***/ 803:
-/***/ ((module) => {
-
-module.exports = eval("require")("nodegit/dist/commit.js");
-
-
-/***/ }),
-
-/***/ 3308:
-/***/ ((module) => {
-
-module.exports = eval("require")("nodegit/dist/oid.js");
-
-
-/***/ }),
-
-/***/ 7990:
-/***/ ((module) => {
-
-module.exports = eval("require")("nodegit/dist/repository.js");
 
 
 /***/ }),
