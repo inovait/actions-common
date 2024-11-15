@@ -21,7 +21,7 @@ Setup java and enable dependency caching for gradle projects.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/gradle-setup@v10
+- uses: inovait/actions-common/gradle-setup@v11
   with:
     java-version: 17
 ```
@@ -35,7 +35,7 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@v7
+- uses: inovait/actions-common/android-setup@v11
   with:
     java-version: 17
 ```
@@ -86,7 +86,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@v10
+    uses: inovait/actions-common/changelog-since-last-build@v11
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -166,7 +166,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@v7
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@v11
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
@@ -321,7 +321,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@v10
+  uses: inovait/actions-common/bump-version-since-last-build@v11
   with:
     versionFile: 'version.txt'
 ```
