@@ -17,13 +17,13 @@ jobs:
   build-actions:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Github Actions run with Node 16 for now, so we must build with Node 16
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: "sudo apt-get update && sudo apt-get install -y libkrb5-dev curl libcurl4 libssl-dev"
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         name: "Cache npm packages"
         with:
           path: ~/.npm

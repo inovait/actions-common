@@ -5,7 +5,7 @@
 Before you add the action, you have to enable deep checkout in your checkout action:
 
 ```yaml
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
   with:
     fetch-depth: 0
 ```

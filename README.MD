@@ -7,7 +7,7 @@ A set of reusable GitHub actions that can be used to simplify your workflows.
 If you use any action that works on git history (such as changelog, jira tickets etc.), you MUST enable deep checkout in your checkout action, otherwise you will get cryptic git errors:
 
 ```yaml
-- uses: actions/checkout@v3
+- uses: actions/checkout@v4
   with:
     fetch-depth: 0
 ```
@@ -21,7 +21,7 @@ Setup java and enable dependency caching for gradle projects.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/gradle-setup@v7
+- uses: inovait/actions-common/gradle-setup@v10
   with:
     java-version: 17
 ```
@@ -86,7 +86,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@v8
+    uses: inovait/actions-common/changelog-since-last-build@v10
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'

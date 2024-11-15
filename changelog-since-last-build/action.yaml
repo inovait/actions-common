@@ -17,7 +17,7 @@ runs:
   using: "composite"
   steps:
     # nx-set-shas action needs at least node 16 installed
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
       with:
         node-version: 20
     - name: Get current branch
