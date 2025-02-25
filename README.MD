@@ -21,7 +21,7 @@ Setup java and enable dependency caching for gradle projects.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/gradle-setup@v12
+- uses: inovait/actions-common/gradle-setup@v13
   with:
     java-version: 17
 ```
@@ -35,7 +35,7 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@v12
+- uses: inovait/actions-common/android-setup@v13
   with:
     java-version: 17
 ```

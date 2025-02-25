@@ -17,7 +17,7 @@ runs:
         folder: ~/.gradle/wrapper
         key: ${{ runner.os }}-gradle-wrapper
         restore: '${{ runner.debug != 1 }}'
-    - uses: inovait/action-localcache@v3
+    - uses: inovait/action-localcache@v4
       name: "Cache gradle dependencies"
       with:
         folder: ~/.gradle/caches/modules-2
