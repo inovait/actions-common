@@ -173,13 +173,13 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ### Login
 
-Before you do any of the below actions, you have to login to Jira. See [Jira Login](https://github.com/marketplace/actions/jira-login) for more info.
+Before you do any of the below actions, you have to login to Jira. See [Jira Login](https://github.com/Justin-JHG/gajira-login) for more info.
 
 Example usage:
 
 ```yaml
 - name: Login to Jira
-  uses: atlassian/gajira-login@v3
+  uses: justin-jhg/gajira-login@6623f76f877312554aa302d1181e2a81e8cde542
   env:
     JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
     JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
@@ -199,7 +199,7 @@ Example usage:
 
 ```yaml
 - name: Make a jira comment
-  uses: inovait/actions-common/jira-comment@v7
+  uses: inovait/actions-common/jira-comment@v8
   with:
     tickets: JT-1,JT-2
     comment: 'This ticket is included in build 1.2.${{ env.BUILD_NUMBER }}.'
@@ -221,7 +221,7 @@ Example usage:
 
 ```yaml
 - name: Transition tickets to test
-  uses: inovait/actions-common/jira-transition@v7
+  uses: inovait/actions-common/jira-transition@v8
   with:
     tickets: JT-1,JT-2
     from: 'In Progress'
@@ -247,7 +247,7 @@ Example usage:
 
 ```yaml
 - name: Update jira tickets
-  uses: inovait/actions-common/jira-update@v7
+  uses: inovait/actions-common/jira-update@v8
   with:
     tickets: JT-1,JT-2
     fixVersion: '1.0.0'
@@ -257,7 +257,7 @@ Example usage:
 Custom field example usage:
 ```yaml
 - name: Update jira tickets
-  uses: inovait/actions-common/jira-update@v7
+  uses: inovait/actions-common/jira-update@v8
   with:
     tickets: JT-1,JT-2
     field: 'customfield_10029+=New_Tag'

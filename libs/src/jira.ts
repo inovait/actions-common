@@ -89,13 +89,7 @@ export async function queryJiraTickets(jira: JiraApi): Promise<JiraTicket[]> {
     const warnings: string[] = rawResponse.warningMessages ?? []
 
     for (const warning of warnings) {
-      if (warning.includes('An issue with key')) {
-        // This warning just means that we did not find desired issue. User might have just misstyped issue key.
-        // Forward it as warning
         core.warning(warning)
-      } else {
-        throw Error(warning)
-      }
     }
 
     response = rawResponse as SearchResponse
