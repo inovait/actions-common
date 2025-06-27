@@ -173,13 +173,13 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ### Login
 
-Before you do any of the below actions, you have to login to Jira. See [Jira Login](https://github.com/marketplace/actions/jira-login) for more info.
+Before you do any of the below actions, you have to login to Jira. See [Jira Login](https://github.com/Justin-JHG/gajira-login) for more info.
 
 Example usage:
 
 ```yaml
 - name: Login to Jira
-  uses: atlassian/gajira-login@v3
+  uses: justin-jhg/gajira-login@6623f76f877312554aa302d1181e2a81e8cde542
   env:
     JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
     JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
