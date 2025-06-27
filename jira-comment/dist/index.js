@@ -58227,14 +58227,7 @@ function queryJiraTickets(jira) {
             const rawResponse = yield jira.searchJira(jql, { startAt: tickets.length, validateQuery: 'warn' });
             const warnings = (_d = rawResponse.warningMessages) !== null && _d !== void 0 ? _d : [];
             for (const warning of warnings) {
-                if (warning.includes('An issue with key')) {
-                    // This warning just means that we did not find desired issue. User might have just misstyped issue key.
-                    // Forward it as warning
-                    core.warning(warning);
-                }
-                else {
-                    throw Error(warning);
-                }
+                core.warning(warning);
             }
             response = rawResponse;
             tickets.push(...response.issues);
