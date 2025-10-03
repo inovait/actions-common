@@ -1,19 +1,7 @@
 import * as core from '@actions/core'
 import { getJiraClient, queryJiraTickets } from 'action_common_libs/src/jira'
-
-interface TransitionsResponse {
-  transitions: Transition[]
-}
-
-interface Transition {
-  id: string
-  name: string
-}
-
-interface TransitionBlock {
-  transition: { id: string }
-  fields?: { resolution: { name: string } }
-}
+import { IssueTransition } from 'jira.js/out/version3/models'
+import { DoTransition } from 'jira.js/out/version3/parameters'
 
 async function main(): Promise<void> {
   try {
@@ -30,23 +18,26 @@ async function main(): Promise<void> {
         continue
       }
 
-      const allPossibleTransitions: TransitionsResponse = await jira.listTransitions(ticket.key) as TransitionsResponse
-      let targetTransition: Transition | null = null
+      const transitionsResponse = await jira.issues.getTransitions({ issueIdOrKey: ticket.key })
+      let targetTransition: IssueTransition | null = null
 
-      for (const transition of allPossibleTransitions.transitions) {
-        if (transition.name.toLowerCase() === to) {
+      const allPossibleTransitions = transitionsResponse.transitions ?? []
+
+      for (const transition of allPossibleTransitions) {
+        if ((transition.name ?? '').toLowerCase() === to) {
           targetTransition = transition
           break
         }
       }
 
       if (targetTransition == null) {
-        const possibleTransitionsText = allPossibleTransitions.transitions.map((t) => t.name).join(', ')
+        const possibleTransitionsText = allPossibleTransitions.map((t) => t.name).join(', ')
         core.setFailed(`Invalid transition '${to}' for issue ${ticket.key}. Possible transitions: ${possibleTransitionsText}`)
         return
       }
 
-      const transitionBlock: TransitionBlock = {
+      const transitionBlock: DoTransition = {
+        issueIdOrKey: ticket.key,
         transition: {
           id: targetTransition.id
         }
@@ -67,8 +58,8 @@ async function main(): Promise<void> {
           }
         }
       }
-      core.info(`Transitioning ${ticket.key} to ${targetTransition.name} (${targetTransition.id}).`)
-      await jira.transitionIssue(ticket.key, transitionBlock)
+      core.info(`Transitioning ${ticket.key} to ${targetTransition.name ?? 'UNKNOWN'} (${targetTransition.id ?? 'UNKNOWN'}).`)
+      await jira.issues.doTransition(transitionBlock)
     }
   } catch (error: any) {
     console.log(error)
