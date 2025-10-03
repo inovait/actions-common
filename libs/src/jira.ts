@@ -1,33 +1,25 @@
-import JiraApi from 'jira-client'
 import * as fs from 'fs/promises'
 import * as YAML from 'yaml'
 import * as core from '@actions/core'
+import { Version3Client } from 'jira.js'
+import { SearchForIssuesUsingJqlEnhancedSearch } from 'jira.js/out/version3/parameters'
 
-interface SearchResponse {
-  issues: JiraTicket[]
-  total: number
-}
-
-/**
- * IssueBean. See https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issues/#api-rest-api-3-issue-issueidorkey-get
- */
 export interface JiraTicket {
   key: string
   fields: TicketFields
 }
 
 export interface TicketFields {
-  status: TicketStatus
-
-  [name: string]: any
+  status: Field
+  issuetype: Field
 }
 
-export interface TicketStatus {
+export interface Field {
   id: string
   name: string
 }
 
-export async function getJiraClient(): Promise<JiraApi> {
+export async function getJiraClient(): Promise<Version3Client> {
   const configPath = `${process.env.HOME ?? ''}/jira/config.yml`
 
   try {
@@ -47,19 +39,18 @@ export async function getJiraClient(): Promise<JiraApi> {
     throw Error('Invalid jira config. Did you execute gajira-login action first?')
   }
 
-  const jiraUrl = new URL(baseUrl)
-
-  return new JiraApi({
-    protocol: jiraUrl.protocol,
-    host: jiraUrl.host,
-    port: jiraUrl.port,
-    username: email,
-    password: token,
-    apiVersion: '3'
+  return new Version3Client({
+    host: baseUrl,
+    authentication: {
+      basic: {
+        email,
+        apiToken: token
+      }
+    }
   })
 }
 
-export async function queryJiraTickets(jira: JiraApi): Promise<JiraTicket[]> {
+export async function queryJiraTickets(jira: Version3Client): Promise<JiraTicket[]> {
   const ticketsRaw: string = core.getInput('tickets') ?? ''
   const inputJql: string = core.getInput('jql')?.trim() ?? ''
 
@@ -81,20 +72,22 @@ export async function queryJiraTickets(jira: JiraApi): Promise<JiraTicket[]> {
   }
 
   const tickets: JiraTicket[] = []
-  let response: SearchResponse
+  const parameters: SearchForIssuesUsingJqlEnhancedSearch = {
+    jql,
+    failFast: false,
+    fields: ['status', 'issuetype']
+  }
+
   do {
-    // @ts-expect-error
-    // Jira types do not have validateQuery here, so we must use @ts-ignore
-    const rawResponse = await jira.searchJira(jql, { startAt: tickets.length, validateQuery: 'warn' })
-    const warnings: string[] = rawResponse.warningMessages ?? []
+    const response = await jira.issueSearch.searchForIssuesUsingJqlEnhancedSearch(parameters)
 
-    for (const warning of warnings) {
-        core.warning(warning)
+    const issues = (response.issues ?? []).map((it) => it as JiraTicket)
+    tickets.push(...issues)
+    if (response.nextPageToken == null) {
+      break
     }
-
-    response = rawResponse as SearchResponse
-    tickets.push(...response.issues)
-  } while (tickets.length < response.total)
+    parameters.nextPageToken = response.nextPageToken
+  } while (true)
 
   return tickets
 }

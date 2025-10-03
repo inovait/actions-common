@@ -35,7 +35,10 @@ async function main(): Promise<void> {
     for (const ticket of tickets) {
       core.info(`Adding a comment to ${ticket.key}.`)
 
-      await jira.addComment(ticket.key, comment)
+      await jira.issueComments.addComment({
+        issueIdOrKey: ticket.key,
+        comment
+      })
     }
   } catch (error: any) {
     console.log(error)

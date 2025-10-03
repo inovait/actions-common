@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import { getJiraClient, queryJiraTickets } from 'action_common_libs/src/jira'
+import { EditIssue } from 'jira.js/out/version3/parameters'
 
 async function main(): Promise<void> {
   try {
@@ -11,9 +12,9 @@ async function main(): Promise<void> {
     const tickets = await queryJiraTickets(jira)
 
     for (const ticket of tickets) {
-      const updateObject: any = {}
       let performRegularUpdate = false
 
+      const updateObject: any = {}
       if (fixVersion != null && fixVersion.length !== 0) {
         updateObject.fixVersions = [
           {
@@ -57,9 +58,8 @@ async function main(): Promise<void> {
       console.info(`Updating ${ticket.key}`)
 
       if (performRegularUpdate) {
-        await jira.updateIssue(ticket.key, {
-          update: updateObject
-        })
+        const editIssue: EditIssue = { issueIdOrKey: ticket.key, update: updateObject }
+        await jira.issues.editIssue(editIssue)
       }
     }
   } catch (error: any) {
