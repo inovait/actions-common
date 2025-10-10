@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import { getJiraClient, queryJiraTickets } from 'action_common_libs/src/jira'
-import { IssueTransition } from 'jira.js/out/version3/models'
-import { DoTransition } from 'jira.js/out/version3/parameters'
+import { Version3Models, Version3Parameters } from 'jira.js'
 
 async function main(): Promise<void> {
   try {
@@ -19,7 +18,7 @@ async function main(): Promise<void> {
       }
 
       const transitionsResponse = await jira.issues.getTransitions({ issueIdOrKey: ticket.key })
-      let targetTransition: IssueTransition | null = null
+      let targetTransition: Version3Models.IssueTransition | null = null
 
       const allPossibleTransitions = transitionsResponse.transitions ?? []
 
@@ -36,7 +35,7 @@ async function main(): Promise<void> {
         return
       }
 
-      const transitionBlock: DoTransition = {
+      const transitionBlock: Version3Parameters.DoTransition = {
         issueIdOrKey: ticket.key,
         transition: {
           id: targetTransition.id

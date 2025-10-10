@@ -1,8 +1,7 @@
 import * as fs from 'fs/promises'
 import * as YAML from 'yaml'
 import * as core from '@actions/core'
-import { Version3Client } from 'jira.js'
-import { SearchForIssuesUsingJqlEnhancedSearch } from 'jira.js/out/version3/parameters'
+import { Version3Client, Version3Parameters } from 'jira.js'
 
 export interface JiraTicket {
   key: string
@@ -72,7 +71,7 @@ export async function queryJiraTickets(jira: Version3Client): Promise<JiraTicket
   }
 
   const tickets: JiraTicket[] = []
-  const parameters: SearchForIssuesUsingJqlEnhancedSearch = {
+  const parameters: Version3Parameters.SearchForIssuesUsingJqlEnhancedSearch = {
     jql,
     failFast: false,
     fields: ['status', 'issuetype']

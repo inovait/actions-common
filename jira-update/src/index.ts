@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import { getJiraClient, queryJiraTickets } from 'action_common_libs/src/jira'
-import { EditIssue } from 'jira.js/out/version3/parameters'
+import { Version3Parameters } from 'jira.js'
 
 async function main(): Promise<void> {
   try {
@@ -58,7 +58,7 @@ async function main(): Promise<void> {
       console.info(`Updating ${ticket.key}`)
 
       if (performRegularUpdate) {
-        const editIssue: EditIssue = { issueIdOrKey: ticket.key, update: updateObject }
+        const editIssue: Version3Parameters.EditIssue = { issueIdOrKey: ticket.key, update: updateObject }
         await jira.issues.editIssue(editIssue)
       }
     }
