@@ -58,8 +58,8 @@ jobs:
         working-directory: ./bump-version
       - run: "npm run all"
         working-directory: ./bump-version
-      - run: 'git config --global user.email "ci@inova.si"'
-      - run: 'git config --global user.name "Build"'
+      - run: 'git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"'
+      - run: 'git config --global user.name "github-actions[bot]"'
       - run: 'git add git-changelog-generator/dist/\*'
       - run: 'git add spotlight-publish/dist/\*'
       - run: 'git add jira-get-tickets-from-commits/dist/\*'
