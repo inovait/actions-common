@@ -5,7 +5,7 @@
 Before you add the action, you have to enable deep checkout in your checkout action:
 
 ```yaml
-- uses: actions/checkout@v4
+- uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6
   with:
     fetch-depth: 0
 ```
@@ -14,7 +14,7 @@ then you can add the changelog action:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@v8
+    uses: inovait/actions-common/git-changelog-generator@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -37,7 +37,7 @@ You can also use `changelog` action step output in your workflow scripts. For ex
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@v8
+    uses: inovait/actions-common/git-changelog-generator@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
     id: my_changelog
     with:
       ...
