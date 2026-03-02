@@ -67,7 +67,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+    uses: inovait/actions-common/git-changelog-generator@e39161d71d6b0200b425ed4145cc4cc080c4cf56
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -86,7 +86,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+    uses: inovait/actions-common/changelog-since-last-build@e39161d71d6b0200b425ed4145cc4cc080c4cf56
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
