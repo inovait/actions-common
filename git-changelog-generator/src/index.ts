@@ -12,12 +12,18 @@ async function main(): Promise<void> {
     const gitCommitUrlPrefix: string = core.getInput('git_commit_url_prefix', { required: true })
     const targetFile: string = core.getInput('target_file')
     const jiraUrl: string = core.getInput('jira_url')
+    const showNames: boolean = core.getInput('show_names') === 'true'
+    const excludeEmails: string[] = core.getMultilineInput('excluded_name_emails')
+    const githubToken: string = core.getInput('github_token')
 
-    const commits = await gatherCommits('.', fromCommit, toCommit)
+    const commits = gatherCommits('.', fromCommit, toCommit)
 
-    const changelog = generateChangelog(commits, {
+    const changelog = await generateChangelog(commits, {
       gitCommitUrlPrefix,
-      jiraUrl
+      jiraUrl,
+      showNames,
+      excludeEmails,
+      githubToken
     })
 
     if (targetFile !== '') {

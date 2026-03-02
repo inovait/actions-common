@@ -1,11 +1,11 @@
 import { Commit } from 'action_common_libs/src/commit-gathering'
 
 export function createFakeCommit(
-    sha: string,
-    summary: string,
-    isoDate: string,
-    description: string = '',
-    parentCount: number = 1
+  sha: string,
+  summary: string,
+  isoDate: string,
+  description: string = '',
+  parentCount: number = 1
 ): Commit {
   let parents = ''
   for (let i = 0; i < parentCount; i++) {
@@ -19,6 +19,8 @@ export function createFakeCommit(
     date: isoDate,
     summary,
     body: description,
-    parents
+    parents,
+    authorEmail: '',
+    authorName: ''
   }
 }

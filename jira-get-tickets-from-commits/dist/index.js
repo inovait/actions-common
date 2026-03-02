@@ -2808,7 +2808,7 @@ function gatherCommits(folder, fromSha, toSha) {
     // Use git log to efficiently list all commits
     // based on https://gist.github.com/cekstam/a7758b8f315835d479f379715eebd0c3
     const res = child_process.execSync(`git log ${fromSha}..${toSha} \\
-  --pretty=format:'{^^^^hash^^^^:^^^^%H^^^^,^^^^date^^^^:^^^^%cI^^^^,^^^^parents^^^^:^^^^%P^^^^,^^^^summary^^^^:^^^^%s^^^^,^^^^body^^^^:^^^^%b^^^^}!!ZZ!!' \\
+  --pretty=format:'{^^^^hash^^^^:^^^^%H^^^^,^^^^date^^^^:^^^^%cI^^^^,^^^^parents^^^^:^^^^%P^^^^,^^^^summary^^^^:^^^^%s^^^^,^^^^body^^^^:^^^^%b^^^^,^^^^authorName^^^^:^^^^%an^^^^,^^^^authorEmail^^^^:^^^^%ae^^^^}!!ZZ!!' \\
   | sed 's/"/\\\\"/g' \\
   | sed 's/\\^^^^/"/g'`, {
         cwd: folder
