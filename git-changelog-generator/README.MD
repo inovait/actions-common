@@ -32,6 +32,9 @@ Inputs:
   For example `https://github.com/inovait/actions-common/commit/` for this repository.
 * `jira_url` (Optional) - URL to the jira instance that contains tickets mentioned in commit messages
 * `target_file` (Optional) - When specified, changelog will also be written to the specified file
+* `show_names` (Optional) - Whether to show author names for commits in changelog
+* `excluded_name_emails` (Optional) - A list of commit author emails that should be excluded from name showing, each in
+  their own line
 
 You can also use `changelog` action step output in your workflow scripts. For example:
 
@@ -67,8 +70,23 @@ If `jira_url` is specified, generator will automatically generate all links to a
 This feature also supports Github issue links (for example `#6`). In this case, `jira_url` must contain link to the
 Github repository (without a trailing slash), for example `https://github.com/inovait/myproject`.
 
+### Commit author attribution
+
+By enabling `show_names` property (disabled by default), you can also list author of every commit in the changelog.
+
+You can use `excluded_name_emails` property to exclude certain people from this feature (for example primary maintainers
+of an open source project):
+
+```yaml
+  - name: Generate Changelog
+    uses: inovait/actions-common/git-changelog-generator@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+    with:
+      ...
+      show_names: true
+      excluded_name_emails: |
+        primary.maintainer@github.com
+```
+
 ## Building
 
 To ensure maximum compatibility, action is built automatically when push is made into `main`.
-
-(Action was adapted from http://hydra/utilities/jenkins-commons/-/blob/master/vars/releases.groovy changelog generator.)

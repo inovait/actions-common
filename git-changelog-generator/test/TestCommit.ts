@@ -5,7 +5,9 @@ export function createFakeCommit(
   summary: string,
   isoDate: string,
   description: string = '',
-  parentCount: number = 1
+  parentCount: number = 1,
+  authorName: string = '',
+  authorEmail: string = '',
 ): Commit {
   let parents = ''
   for (let i = 0; i < parentCount; i++) {
@@ -19,6 +21,8 @@ export function createFakeCommit(
     date: isoDate,
     summary,
     body: description,
-    parents
+    parents,
+    authorName,
+    authorEmail,
   }
 }

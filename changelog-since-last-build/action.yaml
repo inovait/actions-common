@@ -9,6 +9,14 @@ inputs:
     description: 'If present, config will be written to this markdown file'
   jira_url:
     description: 'URL to the jira instance. If present, all JIRA ticket mentions will be linked'
+  show_names:
+    description: 'Whether to show author names for commits in changelog'
+    default: "false"
+  excluded_name_emails:
+    description: 'A list of commit author emails that should be excluded from name showing, each in their own line.'
+  github_token:
+    description: 'GitHub API Access Token.'
+    default: ${{ github.token }}
 outputs:
   changelog:
     description: 'Changelog in the markdown format'
@@ -37,3 +45,6 @@ runs:
         git_commit_url_prefix: '${{ inputs.git_commit_url_prefix }}'
         jira_url: '${{ inputs.jira_url }}'
         target_file: '${{ inputs.target_file }}'
+        show_names: '${{ inputs.show_names }}'
+        excluded_name_emails: '${{ inputs.excluded_name_emails }}'
+        github_token: ${{ inputs.github_token }}
