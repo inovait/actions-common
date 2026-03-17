@@ -21,7 +21,7 @@ Setup java and enable dependency caching for gradle projects.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/gradle-setup@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+- uses: inovait/actions-common/gradle-setup@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     java-version: 17
 ```
@@ -35,7 +35,7 @@ Setup java, Android SDK and enable dependency caching.
 Example usage:
 
 ```yaml
-- uses: inovait/actions-common/android-setup@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+- uses: inovait/actions-common/android-setup@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     java-version: 17
 ```
@@ -50,7 +50,7 @@ Example usage:
 
 ```yaml
 - name: Run Android Emulator tests
-  uses: inovait/actions-common/android-run-with-emulator@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/android-run-with-emulator@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     command: './gradlew connectedAndroidTest'
 ```
@@ -67,7 +67,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/git-changelog-generator@e39161d71d6b0200b425ed4145cc4cc080c4cf56
+    uses: inovait/actions-common/git-changelog-generator@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
     with:
       from: efe8dc92136a28e3f9ace97e7af9ae456fd9e2d0
       to: e31a0104ee0f9831e061a62c555c9db211885b1f
@@ -86,7 +86,7 @@ Example usage:
 
 ```yaml
   - name: Generate Changelog
-    uses: inovait/actions-common/changelog-since-last-build@e39161d71d6b0200b425ed4145cc4cc080c4cf56
+    uses: inovait/actions-common/changelog-since-last-build@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
     with:
       git_commit_url_prefix: 'https://github.com/inovait/actions-common/commit/'
       jira_url: 'https://inova-it.atlassian.net/'
@@ -103,7 +103,7 @@ Example usage:
 
 ```yaml
   - name: Publish to spotlight
-    uses: inovait/actions-common/spotlight-publish@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+    uses: inovait/actions-common/spotlight-publish@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
     with:
       api_key: '...'
       destination: 'release'
@@ -152,7 +152,7 @@ Outputs:
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-from-commits@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/jira-get-tickets-from-commits@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   id: jira-tickets
   with:
     from: 13d7b87c7f6ac5d2e0064a229cf6b2e97766d97f
@@ -166,7 +166,7 @@ Action behaves identically to the above jira action, except that you do not pass
 
 ```yaml
 - name: Get jira tickets
-  uses: inovait/actions-common/jira-get-tickets-since-last-build@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/jira-get-tickets-since-last-build@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   id: jira-tickets
 - run: 'echo Jira tickets: ${{ steps.jira-tickets.outputs.tickets }}'
 ```
@@ -199,7 +199,7 @@ Example usage:
 
 ```yaml
 - name: Make a jira comment
-  uses: inovait/actions-common/jira-comment@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/jira-comment@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     tickets: JT-1,JT-2
     comment: 'This ticket is included in build 1.2.${{ env.BUILD_NUMBER }}.'
@@ -221,7 +221,7 @@ Example usage:
 
 ```yaml
 - name: Transition tickets to test
-  uses: inovait/actions-common/jira-transition@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/jira-transition@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     tickets: JT-1,JT-2
     from: 'In Progress'
@@ -247,7 +247,7 @@ Example usage:
 
 ```yaml
 - name: Update jira tickets
-  uses: inovait/actions-common/jira-update@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/jira-update@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     tickets: JT-1,JT-2
     fixVersion: '1.0.0'
@@ -257,7 +257,7 @@ Example usage:
 Custom field example usage:
 ```yaml
 - name: Update jira tickets
-  uses: inovait/actions-common/jira-update@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/jira-update@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     tickets: JT-1,JT-2
     field: 'customfield_10029+=New_Tag'
@@ -286,7 +286,7 @@ Example usage:
 
 ```yaml
 - name: Bump minor version
-  uses: inovait/actions-common/bump-version@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/bump-version@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     versionFile: 'version.txt'
     increment: minor
@@ -295,7 +295,7 @@ Example usage:
 ```yaml
 - name: Bump major version from file
   id: version-step
-  uses: inovait/actions-common/bump-version@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/bump-version@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     version: '1.0.0'
     increment: major
@@ -305,7 +305,7 @@ Example usage:
 ```yaml
 - name: Bump version from commits
   id: version-step
-  uses: inovait/actions-common/bump-version@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/bump-version@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     versionFile: 'version.txt'
     increment: auto
@@ -321,7 +321,7 @@ you do not pass `from` and `to` inputs - they will be automatically populated to
 ```yaml
 - name: Bump version from commits since last build
   id: version-step
-  uses: inovait/actions-common/bump-version-since-last-build@f8fda91ba115fed07abdcabe8f4fca5d6966b9dd
+  uses: inovait/actions-common/bump-version-since-last-build@da9a92bef70418c0a9cdd17eafab499fc42428cd #v17
   with:
     versionFile: 'version.txt'
 ```
