@@ -137,3 +137,4 @@ out
 *.iml
 
 test/*.js
+/.idea/git_toolbox_prj.xml
