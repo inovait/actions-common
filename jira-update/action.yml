@@ -12,5 +12,5 @@ inputs:
   field:
     description: '(Optional) Append value to custom field for this ticket'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
